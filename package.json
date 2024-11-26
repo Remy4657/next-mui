@@ -1,5 +1,5 @@
 {
-  "name": "next-mui",
+  "name": "pj1",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,8 +12,12 @@
     "@emotion/cache": "^11.13.5",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.8",
     "@mui/material": "^6.1.8",
     "@mui/material-nextjs": "^6.1.8",
+    "@toolpad/core": "^0.10.0",
+    "bootstrap": "^5.3.3",
+    "mongoose": "^8.8.2",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106"
