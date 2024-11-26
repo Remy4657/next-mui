@@ -15,6 +15,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import ColorModeSelect from "../theme/ColorModeSelect";
+import { useRouter } from "next/navigation";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -110,10 +111,15 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     return isValid;
   };
+  const router = useRouter();
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    router.push("/home");
+  };
 
   return (
     <div>
-      <CssBaseline enableColorScheme />
+      {/* <CssBaseline enableColorScheme /> */}
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
@@ -195,11 +201,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           </Box>
           <Divider>or</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign in with Google")}
-            >
+            <Button fullWidth variant="outlined" onClick={handleClick}>
               Sign in with Google
             </Button>
             <Button
@@ -215,6 +217,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
+                onClick={handleClick}
               >
                 Sign up
               </Link>
