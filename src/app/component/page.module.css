@@ -1,0 +1,4 @@
+.c_sidebar {
+  display: flex;
+  justify-content: space-between;
+}

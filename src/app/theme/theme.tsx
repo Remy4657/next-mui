@@ -10,7 +10,7 @@ const roboto = Roboto({
 
 const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
@@ -18,7 +18,7 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: "data-toolpad-color-scheme",
   },
-  colorSchemes: { light: true, dark: true },
+  colorSchemes: { light: false, dark: true },
   breakpoints: {
     values: {
       xs: 0,
