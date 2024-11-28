@@ -20,10 +20,12 @@ import ListItemText from "@mui/material/ListItemText";
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
 import Link from "next/link";
-import ColorModeSelect from "../theme/ColorModeSelect";
-import BasicMenu from "./BasicMenu/page";
-
-import styles from "./page.module.css";
+import ColorModeSelect from "../../theme/ColorModeSelect";
+import BasicMenu from "../BasicMenu/page";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const drawerWidth = 240;
 
@@ -267,6 +269,106 @@ export default function Sidebar() {
               </ListItemButton>
             </Link>
           </ListItem>
+
+          {/* dropdown menu */}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <Accordion sx={{ boxShadow: "none" }}>
+              <AccordionSummary
+                expandIcon={<ArrowDropDownIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                sx={{
+                  justifyContent: "left",
+                  padding: "0 20px",
+                }}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  <InfoIcon />
+                </ListItemIcon>
+                <ListItemText
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                >
+                  Item parent
+                </ListItemText>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Link href="/">
+                  <ListItemButton
+                    sx={[
+                      {
+                        minHeight: 48,
+                        px: 2.5,
+                      },
+                      open
+                        ? {
+                            justifyContent: "initial",
+                          }
+                        : {
+                            justifyContent: "center",
+                          },
+                    ]}
+                  >
+                    <ListItemIcon
+                      sx={[
+                        {
+                          minWidth: 0,
+                          justifyContent: "center",
+                        },
+                        open
+                          ? {
+                              mr: 3,
+                            }
+                          : {
+                              mr: "auto",
+                            },
+                      ]}
+                    >
+                      <InfoIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={[
+                        open
+                          ? {
+                              opacity: 1,
+                            }
+                          : {
+                              opacity: 0,
+                            },
+                      ]}
+                    >
+                      Item child
+                    </ListItemText>
+                  </ListItemButton>
+                </Link>
+              </AccordionDetails>
+            </Accordion>
+          </ListItem>
+
+          {/* end dropdow menu */}
+
           <ListItem disablePadding sx={{ display: "block" }}>
             <Link href="/about">
               <ListItemButton
@@ -312,7 +414,7 @@ export default function Sidebar() {
                         },
                   ]}
                 >
-                  <BasicMenu />
+                  About
                 </ListItemText>
               </ListItemButton>
             </Link>
