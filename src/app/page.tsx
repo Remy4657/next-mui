@@ -265,7 +265,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [data, setData] = React.useState([]);
+  const [listData, setListData] = React.useState([]);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -325,7 +325,7 @@ export default function EnhancedTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      [...rows]
+      [...listData]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage]
@@ -334,9 +334,7 @@ export default function EnhancedTable() {
   /* === function cus === */
   const fetchData = async () => {
     const res = await axios.get("http://localhost:3000/post/api");
-    setData(res.data.data);
-    console.log("res home: ", res.data.data);
-    //console.log("data home: ", data);
+    setListData(res.data.data);
   };
   React.useEffect(() => {
     fetchData();
@@ -359,10 +357,10 @@ export default function EnhancedTable() {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={data.length}
+                rowCount={listData.length}
               />
               <TableBody>
-                {data.map((row: resData, index) => {
+                {visibleRows.map((row: resData, index) => {
                   const isItemSelected = selected.includes(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -416,7 +414,7 @@ export default function EnhancedTable() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={listData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

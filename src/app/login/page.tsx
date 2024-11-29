@@ -17,6 +17,9 @@ import ColorModeSelect from "../theme/ColorModeSelect";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+// ** storage
+import { setLocalUserData } from "../helper/storage";
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -89,6 +92,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       email: data.get("email"),
       password: data.get("password"),
     });
+    setLocalUserData(
+      JSON.stringify(res.data.data.user),
+      res.data.data.access_token,
+      res.data.data.refresh_token
+    );
+
     router.push("/");
     console.log("res: ", res);
   };

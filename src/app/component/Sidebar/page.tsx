@@ -26,7 +26,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
+import styles from "./page.module.css";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -113,7 +113,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -280,6 +280,8 @@ export default function Sidebar() {
                 sx={{
                   justifyContent: "left",
                   padding: "0 20px",
+                  height: "48px",
+                  minHeight: "inherit !important",
                 }}
               >
                 <ListItemIcon
@@ -298,7 +300,7 @@ export default function Sidebar() {
                         },
                   ]}
                 >
-                  <InfoIcon />
+                  <HomeIcon />
                 </ListItemIcon>
                 <ListItemText
                   sx={[
@@ -366,7 +368,105 @@ export default function Sidebar() {
               </AccordionDetails>
             </Accordion>
           </ListItem>
-
+          {/* end dropdow menu */}
+          {/* dropdown menu */}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <Accordion sx={{ boxShadow: "none" }}>
+              <AccordionSummary
+                expandIcon={<ArrowDropDownIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                sx={{
+                  justifyContent: "left",
+                  padding: "0 20px",
+                  height: "48px",
+                  minHeight: "inherit !important",
+                }}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                >
+                  Item parent
+                </ListItemText>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Link href="/">
+                  <ListItemButton
+                    sx={[
+                      {
+                        minHeight: 48,
+                        px: 2.5,
+                      },
+                      open
+                        ? {
+                            justifyContent: "initial",
+                          }
+                        : {
+                            justifyContent: "center",
+                          },
+                    ]}
+                  >
+                    <ListItemIcon
+                      sx={[
+                        {
+                          minWidth: 0,
+                          justifyContent: "center",
+                        },
+                        open
+                          ? {
+                              mr: 3,
+                            }
+                          : {
+                              mr: "auto",
+                            },
+                      ]}
+                    >
+                      <InfoIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={[
+                        open
+                          ? {
+                              opacity: 1,
+                            }
+                          : {
+                              opacity: 0,
+                            },
+                      ]}
+                    >
+                      Item child
+                    </ListItemText>
+                  </ListItemButton>
+                </Link>
+              </AccordionDetails>
+            </Accordion>
+          </ListItem>
           {/* end dropdow menu */}
 
           <ListItem disablePadding sx={{ display: "block" }}>
@@ -401,7 +501,7 @@ export default function Sidebar() {
                         },
                   ]}
                 >
-                  <InfoIcon />
+                  <HomeIcon />
                 </ListItemIcon>
                 <ListItemText
                   sx={[
