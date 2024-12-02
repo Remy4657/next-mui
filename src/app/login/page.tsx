@@ -17,6 +17,9 @@ import ColorModeSelect from "../theme/ColorModeSelect";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+// ** Hooks
+import { useAuth } from "../hooks/useAuth";
+
 // ** storage
 import { setLocalUserData } from "../helper/storage";
 
@@ -70,6 +73,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
   const router = useRouter();
 
+  // ** context
+  const { login } = useAuth();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -78,28 +84,32 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    data2: { email: string; password: string }
+  ) => {
     event.preventDefault();
     if (emailError || passwordError) {
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    //const data = new FormData(event.currentTarget);
+    // const res = await axios.post("http://localhost:3001/api/auth/login", {
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    login({
+      email: "admin@gmail.com",
+      password: "123456789Kha@",
     });
-    const res = await axios.post("http://localhost:3001/api/auth/login", {
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    setLocalUserData(
-      JSON.stringify(res.data.data.user),
-      res.data.data.access_token,
-      res.data.data.refresh_token
-    );
+
+    // setLocalUserData(
+    //   JSON.stringify(res.data.data.user),
+    //   res.data.data.access_token,
+    //   res.data.data.refresh_token
+    // );
 
     router.push("/");
-    console.log("res: ", res);
+    // console.log("res: ", res);
   };
 
   const validateInputs = () => {
@@ -191,6 +201,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
+                value={"123456789Kha@"}
               />
             </FormControl>
             <FormControlLabel

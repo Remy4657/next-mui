@@ -14,13 +14,22 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
+
+// ** icon
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
+
+// ** axios
 import axios from "axios";
+
+//* useContext
+import { useContext } from "react";
+import { AuthContext } from "./contexts/AuthContext";
+
+//const useAuth = () => useContext(AuthContext);
+import { useAuth } from "./hooks/useAuth";
 
 // import { visuallyHidden } from "@mui/utils";
 
@@ -267,6 +276,8 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [listData, setListData] = React.useState([]);
 
+  const { user } = useAuth();
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -328,7 +339,7 @@ export default function EnhancedTable() {
       [...listData]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, listData]
   );
 
   /* === function cus === */

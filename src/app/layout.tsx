@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -6,6 +7,12 @@ import theme from "./theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import SidebarWrapper from "./component/SidebarWrapper/page";
+
+// ** Contexts
+import { AuthProvider } from "./contexts/AuthContext";
+
+// axios instance
+import { AxiosInterceptor } from "./helper/axios";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,7 +41,9 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            <SidebarWrapper>{children}</SidebarWrapper>
+            <AuthProvider>
+              <SidebarWrapper>{children}</SidebarWrapper>
+            </AuthProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
