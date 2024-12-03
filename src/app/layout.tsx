@@ -42,7 +42,9 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             <AuthProvider>
-              <SidebarWrapper>{children}</SidebarWrapper>
+              <AxiosInterceptor>
+                <SidebarWrapper>{children}</SidebarWrapper>
+              </AxiosInterceptor>
             </AuthProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>

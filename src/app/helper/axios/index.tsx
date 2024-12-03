@@ -10,11 +10,8 @@ import { BASE_URL, API_ENDPOINT } from "../../config/api";
 // ** helper
 import {
   clearLocalUserData,
-  clearTemporaryToken,
   getLocalUserData,
-  getTemporaryToken,
   setLocalUserData,
-  setTemporaryToken,
 } from "../storage/index";
 
 // ** Next
@@ -24,7 +21,7 @@ import { NextRouter } from "next/router";
 // ** React
 import { FC, useEffect } from "react";
 
-// types
+// ** types
 import { UserDataType } from "../../contexts/types";
 
 // ** hooks
@@ -36,23 +33,13 @@ type TAxiosInterceptor = {
 
 const instanceAxios = axios.create({ baseURL: BASE_URL });
 
-instanceAxios.interceptors.request.use(
-  function (config) {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    // Do something before request is sent
-    return config;
-  },
-  function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  }
-);
+instanceAxios.defaults.withCredentials = true; // use to set value of cookie
+
+let isRefreshing = false;
+let failedQueue: any[] = [];
 
 const handleRedirectLogin = (
-  router: NextRouter,
+  router: any,
   setUser: (data: UserDataType | null) => void
 ) => {
   if (router.asPath !== "/") {
@@ -65,11 +52,7 @@ const handleRedirectLogin = (
   }
   setUser(null);
   clearLocalUserData();
-  clearTemporaryToken();
 };
-
-let isRefreshing = false;
-let failedQueue: any[] = [];
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -102,81 +85,104 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
   const router = useRouter();
   const { setUser, user } = useAuth();
 
+  console.log("user: ", user);
+
   useEffect(() => {
     const reqInterceptor = instanceAxios.interceptors.request.use(
       async (config) => {
         const { accessToken, refreshToken } = getLocalUserData();
-        console.log("token: ", { accessToken, refreshToken });
-        const { temporaryToken } = getTemporaryToken();
-        const isPublicApi = config?.params?.isPublic;
-        if (accessToken || temporaryToken) {
+        if (accessToken) {
           let decodedAccessToken: any = {};
-          if (accessToken) {
-            decodedAccessToken = jwtDecode(accessToken);
-          } else if (temporaryToken) {
-            decodedAccessToken = jwtDecode(temporaryToken);
-          }
+          decodedAccessToken = jwtDecode(accessToken);
 
           if (decodedAccessToken?.exp > Date.now() / 1000) {
-            config.headers["Authorization"] =
-              `Bearer ${accessToken ? accessToken : temporaryToken}`;
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
           } else {
-            if (refreshToken) {
-              const decodedRefreshToken: any = jwtDecode(refreshToken);
-
-              if (decodedRefreshToken?.exp > Date.now() / 1000) {
-                if (!isRefreshing) {
-                  isRefreshing = true;
-                  await axios
-                    .post(
-                      `${API_ENDPOINT.AUTH.INDEX}/refresh-token`,
-                      {},
-                      {
-                        headers: {
-                          Authorization: `Bearer ${refreshToken}`,
-                        },
-                      }
-                    )
-                    .then((res) => {
-                      const newAccessToken = res?.data?.data?.access_token;
-                      if (newAccessToken) {
-                        config.headers["Authorization"] =
-                          `Bearer ${newAccessToken}`;
-                        processQueue(null, newAccessToken);
-                        if (accessToken) {
-                          setLocalUserData(
-                            JSON.stringify(user),
-                            newAccessToken,
-                            refreshToken
-                          );
-                        }
-                      } else {
-                        // handleRedirectLogin(router, setUser);
-                      }
-                    })
-                    .catch((e) => {
-                      processQueue(e, null);
-                      // handleRedirectLogin(router, setUser);
-                    })
-                    .finally(() => {
-                      isRefreshing = false;
-                    });
-                } else {
-                  return await addRequestQueue(config);
-                }
-              } else {
-                // handleRedirectLogin(router, setUser);
-              }
+            if (!isRefreshing) {
+              isRefreshing = true;
+              await axios
+                .post(`http://192.168.30.106:8080/api/v1/auth/refresh-token`, {
+                  userId: 4,
+                })
+                .then((res) => {
+                  console.log("res refresh token: ", res);
+                  const newAccessToken = res?.data;
+                  if (newAccessToken) {
+                    config.headers["Authorization"] =
+                      `Bearer ${newAccessToken}`;
+                    processQueue(null, newAccessToken);
+                    if (accessToken) {
+                      setLocalUserData(
+                        JSON.stringify(user),
+                        newAccessToken,
+                        "refreshtoken"
+                      );
+                    }
+                  } else {
+                    handleRedirectLogin(router, setUser);
+                  }
+                })
+                .catch((e) => {
+                  processQueue(e, null);
+                  handleRedirectLogin(router, setUser);
+                })
+                .finally(() => {
+                  isRefreshing = false;
+                });
             } else {
-              // handleRedirectLogin(router, setUser);
+              return await addRequestQueue(config);
             }
-          }
-        } else if (!isPublicApi) {
-          //handleRedirectLogin(router, setUser);
-        }
 
-        if (config?.params?.isPublic) {
-          delete config.params.isPublic;
+            // if (refreshToken) {
+            //   const decodedRefreshToken: any = jwtDecode(refreshToken);
+
+            //   if (decodedRefreshToken?.exp > Date.now() / 1000) {
+            //     if (!isRefreshing) {
+            //       isRefreshing = true;
+            //       await axios
+            //         .post(
+            //           `http://192.168.30.106:8080/api/v1/auth/refresh-token`,
+            //           {},
+            //           {
+            //             headers: {
+            //               Authorization: `Bearer ${refreshToken}`,
+            //             },
+            //           }
+            //         )
+            //         .then((res) => {
+            //           const newAccessToken = res?.data;
+            //           if (newAccessToken) {
+            //             config.headers["Authorization"] =
+            //               `Bearer ${newAccessToken}`;
+            //             processQueue(null, newAccessToken);
+            //             if (accessToken) {
+            //               setLocalUserData(
+            //                 JSON.stringify(user),
+            //                 newAccessToken,
+            //                 refreshToken
+            //               );
+            //             }
+            //           } else {
+            //             handleRedirectLogin(router, setUser);
+            //           }
+            //         })
+            //         .catch((e) => {
+            //           processQueue(e, null);
+            //           handleRedirectLogin(router, setUser);
+            //         })
+            //         .finally(() => {
+            //           isRefreshing = false;
+            //         });
+            //     } else {
+            //       return await addRequestQueue(config);
+            //     }
+            //   } else {
+            //     handleRedirectLogin(router, setUser);
+            //   }
+            // } else {
+            //   handleRedirectLogin(router, setUser);
+            // }
+          }
         }
 
         return config;

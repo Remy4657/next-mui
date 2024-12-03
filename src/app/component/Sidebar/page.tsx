@@ -17,16 +17,20 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InfoIcon from "@mui/icons-material/Info";
-import HomeIcon from "@mui/icons-material/Home";
+
 import Link from "next/link";
 import ColorModeSelect from "../../theme/ColorModeSelect";
-import BasicMenu from "../BasicMenu/page";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import styles from "./page.module.css";
+
+// ** icon
+import InfoIcon from "@mui/icons-material/Info";
+import HomeIcon from "@mui/icons-material/Home";
+
+// ** auth
+import { useAuth } from "src/app/hooks/useAuth";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -122,6 +126,7 @@ export default function Sidebar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const { user } = useAuth();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -577,7 +582,7 @@ export default function Sidebar() {
                       },
                 ]}
               >
-                Login
+                {user?.email ? user.email : "Login"}
               </ListItemText>
             </ListItemButton>
           </Link>

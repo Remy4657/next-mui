@@ -3,7 +3,7 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
 
 // ** Next Import
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 // ** Types
 import {
@@ -11,8 +11,6 @@ import {
   LoginParams,
   ErrCallbackType,
   UserDataType,
-  LoginGoogleParams,
-  LoginFacebookParams,
 } from "./types";
 
 // ** instance axios
@@ -22,19 +20,13 @@ import instanceAxios from "../helper/axios/index";
 import { API_ENDPOINT } from "../config/api";
 
 // ** services
-import {
-  loginAuth,
-  loginAuthFacebook,
-  loginAuthGoogle,
-  logoutAuth,
-} from "../services/auth";
+import { loginAuth } from "../services/auth";
 
 // ** helper
-import {
-  clearLocalUserData,
-  setLocalUserData,
-  setTemporaryToken,
-} from "../helper/storage";
+import { clearLocalUserData, setLocalUserData } from "../helper/storage";
+
+// ** jwt decode
+import { jwtDecode } from "jwt-decode";
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -58,6 +50,7 @@ const AuthProvider = ({ children }: Props) => {
 
   // ** Hooks
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
@@ -79,9 +72,9 @@ const AuthProvider = ({ children }: Props) => {
             clearLocalUserData();
             setUser(null);
             setLoading(false);
-            // if (!router.pathname.includes("login")) {
-            //   router.replace("/login");
-            // }
+            if (!pathname.includes("login")) {
+              router.replace("/login");
+            }
           });
       } else {
         setLoading(false);
@@ -99,18 +92,16 @@ const AuthProvider = ({ children }: Props) => {
       password: params.password,
     })
       .then(async (response) => {
+        console.log("response: ", response);
         setLocalUserData(
-          JSON.stringify(response.data.user),
-          response.data.access_token,
-          response.data.refresh_token
+          JSON.stringify(response.data),
+          response.data.token,
+          response.data.refreshToken
         );
-
         // toast.success(t("Login_success"));
-
         // const returnUrl = router.query.returnUrl;
-        setUser({ ...response.data.user });
+        setUser({ ...response.data });
         const redirectURL = "/";
-
         router.replace(redirectURL as string);
       })
 

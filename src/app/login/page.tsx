@@ -15,7 +15,6 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import ColorModeSelect from "../theme/ColorModeSelect";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 // ** Hooks
 import { useAuth } from "../hooks/useAuth";
@@ -84,32 +83,37 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-    data2: { email: string; password: string }
-  ) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (emailError || passwordError) {
       return;
     }
-    //const data = new FormData(event.currentTarget);
+    interface data {
+      email: String;
+      password: String;
+    }
+
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
+
     // const res = await axios.post("http://localhost:3001/api/auth/login", {
     //   email: data.get("email"),
     //   password: data.get("password"),
     // });
+    // if (typeof email !== "string" || typeof password !== "string") {
+    //   console.error("Email hoặc mật khẩu không hợp lệ!");
+    //   return;
+    // }
     login({
-      email: "admin@gmail.com",
-      password: "123456789Kha@",
+      email: email,
+      password: password,
     });
-
-    // setLocalUserData(
-    //   JSON.stringify(res.data.data.user),
-    //   res.data.data.access_token,
-    //   res.data.data.refresh_token
-    // );
-
+    // login({
+    //   email: "duckun1909@gmail.com",
+    //   password: "123456789",
+    // });
     router.push("/");
-    // console.log("res: ", res);
   };
 
   const validateInputs = () => {
@@ -140,12 +144,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push("/home");
+    //router.push("/home");
   };
 
   return (
     <div>
-      {/* <CssBaseline enableColorScheme /> */}
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
@@ -201,7 +204,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
-                value={"123456789Kha@"}
+                //value={"123456789"}
               />
             </FormControl>
             <FormControlLabel
