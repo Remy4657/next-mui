@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -13,6 +13,9 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 // axios instance
 import { AxiosInterceptor } from "./helper/axios";
+
+// ** import file
+import Loading from "./login/loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,7 +46,9 @@ export default function RootLayout({
             <CssBaseline enableColorScheme />
             <AuthProvider>
               <AxiosInterceptor>
-                <SidebarWrapper>{children}</SidebarWrapper>
+                <SidebarWrapper>
+                  <Suspense fallback={<Loading />}>{children}</Suspense>
+                </SidebarWrapper>
               </AxiosInterceptor>
             </AuthProvider>
           </ThemeProvider>

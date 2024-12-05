@@ -28,7 +28,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 
-//const useAuth = () => useContext(AuthContext);
+// ** auth
 import { useAuth } from "./hooks/useAuth";
 
 // import { visuallyHidden } from "@mui/utils";
@@ -277,6 +277,7 @@ export default function EnhancedTable() {
   const [listData, setListData] = React.useState([]);
 
   const { user, loading } = useAuth();
+  console.log("user out useEffect: ", user);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -326,10 +327,6 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -344,11 +341,12 @@ export default function EnhancedTable() {
 
   /* === function cus === */
   const fetchData = async () => {
-    const res = await axios.get("http://192.168.30.107:3000/post/api");
+    const res = await axios.get("http://localhost:3000/post/api");
     setListData(res.data.data);
   };
   React.useEffect(() => {
     fetchData();
+    console.log("user in useEffect: ", user);
   }, []);
 
   return (

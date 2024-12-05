@@ -14,8 +14,13 @@ import {
 } from "../types/auth";
 
 export const loginAuth = async (data: TLoginAuth) => {
-  const res = await axios.post(
-    `http://192.168.30.106:8080/api/v1/auth/login`,
+  const res = await axios.post(`${API_ENDPOINT.AUTH.INDEX}/login`, data);
+
+  return res.data;
+};
+export const refreshToken = async (data: any) => {
+  const res = await instanceAxios.post(
+    `${API_ENDPOINT.AUTH.INDEX}/refresh-token`,
     data
   );
 

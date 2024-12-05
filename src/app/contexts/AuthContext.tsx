@@ -15,6 +15,7 @@ import {
 
 // ** instance axios
 import instanceAxios from "../helper/axios/index";
+import axios from "axios";
 
 // ** Config
 import { API_ENDPOINT } from "../config/api";
@@ -57,17 +58,16 @@ const AuthProvider = ({ children }: Props) => {
       const storedToken = window.localStorage.getItem("accessToken");
 
       if (storedToken) {
-        alert("have accessToken");
+        // alert("have accessToken");
         setLoading(true);
         await instanceAxios
-          .get(API_ENDPOINT.AUTH.AUTH_ME)
+          .get(`${API_ENDPOINT.AUTH.AUTH_ME}`)
           .then(async (response) => {
-            console.log("response.data.data: ", response);
             setLoading(false);
             setUser({ ...response.data.data });
           })
           .catch((e) => {
-            alert("error: ");
+            // alert("error: ");
 
             clearLocalUserData();
             setUser(null);
@@ -92,11 +92,10 @@ const AuthProvider = ({ children }: Props) => {
       password: params.password,
     })
       .then(async (response) => {
-        console.log("response: ", response);
         setLocalUserData(
           JSON.stringify(response.data),
-          response.data.token,
-          response.data.refreshToken
+          response.data.access_token,
+          response.data.refresh_token
         );
         // toast.success(t("Login_success"));
         // const returnUrl = router.query.returnUrl;

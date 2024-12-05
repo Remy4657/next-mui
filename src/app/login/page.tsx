@@ -22,6 +22,9 @@ import { useAuth } from "../hooks/useAuth";
 // ** storage
 import { setLocalUserData } from "../helper/storage";
 
+// ** import file
+import Loading from "./loading";
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -69,11 +72,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true); // Thêm state loading
 
   const router = useRouter();
 
   // ** context
-  const { login } = useAuth();
+  const { user, login } = useAuth();
+  //const user = "hello";
+  //console.log("user out effect in login: ", user);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -109,10 +115,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       email: email,
       password: password,
     });
-    // login({
-    //   email: "duckun1909@gmail.com",
-    //   password: "123456789",
-    // });
     router.push("/");
   };
 
@@ -147,114 +149,154 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     //router.push("/home");
   };
 
+  React.useEffect(() => {
+    console.log("user: ", user);
+    if (user) {
+      router.push("/"); // Nếu có user, chuyển hướng
+      return;
+    } else {
+      setIsLoading(false); // Nếu không có user, ngừng trạng thái loading
+    }
+  }, [user]);
+  console.log("user ngoai: ", user);
+  if (isLoading) {
+    // truong hop setLoading: loading: false, user == null
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography variant="h6">Loading...</Typography>
+      </div>
+    );
+  }
   return (
-    <div>
-      <SignInContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect
-          sx={{ position: "fixed", top: "1rem", right: "1rem" }}
-        />
-        <Card variant="outlined">
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-          >
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={emailError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? "error" : "primary"}
-                //value={"123456789"}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+    <>
+      {!user ? (
+        <div>
+          <SignInContainer direction="column" justifyContent="space-between">
+            <ColorModeSelect
+              sx={{ position: "fixed", top: "1rem", right: "1rem" }}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}
-            >
-              Sign in
-            </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: "center" }}
-            >
-              Forgot your password?
-            </Link>
-          </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Button fullWidth variant="outlined" onClick={handleClick}>
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign in with Facebook")}
-            >
-              Sign in with Facebook
-            </Button>
-            <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-                onClick={handleClick}
+            <Card variant="outlined">
+              <Typography
+                component="h1"
+                variant="h4"
+                sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
               >
-                Sign up
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-      </SignInContainer>
-    </div>
+                Sign in
+              </Typography>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  gap: 2,
+                }}
+              >
+                <FormControl>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <TextField
+                    error={emailError}
+                    helperText={emailErrorMessage}
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    autoComplete="email"
+                    autoFocus
+                    required
+                    fullWidth
+                    variant="outlined"
+                    color={emailError ? "error" : "primary"}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <TextField
+                    error={passwordError}
+                    helperText={passwordErrorMessage}
+                    name="password"
+                    placeholder="••••••"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    autoFocus
+                    required
+                    fullWidth
+                    variant="outlined"
+                    color={passwordError ? "error" : "primary"}
+                    value={"123456789Kha@"}
+                  />
+                </FormControl>
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick={validateInputs}
+                >
+                  Sign in
+                </Button>
+                <Link
+                  component="button"
+                  type="button"
+                  onClick={handleClickOpen}
+                  variant="body2"
+                  sx={{ alignSelf: "center" }}
+                >
+                  Forgot your password?
+                </Link>
+              </Box>
+              <Divider>or</Divider>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Button fullWidth variant="outlined" onClick={handleClick}>
+                  Sign in with Google
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  onClick={() => alert("Sign in with Facebook")}
+                >
+                  Sign in with Facebook
+                </Button>
+                <Typography sx={{ textAlign: "center" }}>
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/material-ui/getting-started/templates/sign-in/"
+                    variant="body2"
+                    sx={{ alignSelf: "center" }}
+                    onClick={handleClick}
+                  >
+                    Sign up
+                  </Link>
+                </Typography>
+              </Box>
+            </Card>
+          </SignInContainer>
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Typography variant="h6">Loading...</Typography>
+        </div>
+      )}
+    </>
   );
 }
