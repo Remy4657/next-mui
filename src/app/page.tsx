@@ -24,12 +24,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // ** axios
 import axios from "axios";
 
-//* useContext
-import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 
 // ** auth
 import { useAuth } from "./hooks/useAuth";
+
+// ** import file
+import Loading from "./component/common/loading";
 
 // import { visuallyHidden } from "@mui/utils";
 
@@ -277,8 +278,6 @@ export default function EnhancedTable() {
   const [listData, setListData] = React.useState([]);
 
   const { user, loading } = useAuth();
-  console.log("user out useEffect: ", user);
-
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -343,11 +342,16 @@ export default function EnhancedTable() {
   const fetchData = async () => {
     const res = await axios.get("http://localhost:3000/post/api");
     setListData(res.data.data);
+    console.log("res: ", res);
   };
   React.useEffect(() => {
     fetchData();
-    console.log("user in useEffect: ", user);
   }, []);
+  console.log("user: ", user);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="home">

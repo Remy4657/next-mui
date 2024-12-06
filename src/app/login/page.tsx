@@ -23,7 +23,7 @@ import { useAuth } from "../hooks/useAuth";
 import { setLocalUserData } from "../helper/storage";
 
 // ** import file
-import Loading from "./loading";
+import Loading from "../component/common/loading";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -77,9 +77,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const router = useRouter();
 
   // ** context
-  const { user, login } = useAuth();
-  //const user = "hello";
-  //console.log("user out effect in login: ", user);
+  const { user, loading, login } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -150,7 +148,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   React.useEffect(() => {
-    console.log("user: ", user);
     if (user) {
       router.push("/"); // Nếu có user, chuyển hướng
       return;
@@ -158,21 +155,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setIsLoading(false); // Nếu không có user, ngừng trạng thái loading
     }
   }, [user]);
-  console.log("user ngoai: ", user);
-  if (isLoading) {
-    // truong hop setLoading: loading: false, user == null
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Typography variant="h6">Loading...</Typography>
-      </div>
-    );
+  if (loading) {
+    return <Loading />;
   }
   return (
     <>
@@ -300,3 +284,5 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     </>
   );
 }
+
+// flow

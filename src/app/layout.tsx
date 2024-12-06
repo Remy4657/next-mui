@@ -11,11 +11,14 @@ import SidebarWrapper from "./component/SidebarWrapper/page";
 // ** Contexts
 import { AuthProvider } from "./contexts/AuthContext";
 
+// ** auth hoock
+import { useAuth } from "./hooks/useAuth";
+
 // axios instance
 import { AxiosInterceptor } from "./helper/axios";
 
 // ** import file
-import Loading from "./login/loading";
+import Loading from "./component/common/loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

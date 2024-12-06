@@ -8,26 +8,28 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import Link from "next/link";
 import ColorModeSelect from "../../theme/ColorModeSelect";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 // ** icon
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+
+// ** Import file
+import AccountMenu from "./AccountMenu/page";
 
 // ** auth
 import { useAuth } from "src/app/hooks/useAuth";
@@ -537,7 +539,7 @@ export default function Sidebar() {
             left: 0,
           }}
         >
-          <Link href="/login">
+          {user?.email ? (
             <ListItemButton
               sx={[
                 {
@@ -568,7 +570,8 @@ export default function Sidebar() {
                       },
                 ]}
               >
-                <PersonOutlineIcon />
+                {/* <PersonOutlineIcon /> */}
+                <AccountMenu />
               </ListItemIcon>
               <ListItemText
                 //primary={text}
@@ -582,10 +585,60 @@ export default function Sidebar() {
                       },
                 ]}
               >
-                {user?.email ? user.email : "Login"}
+                {user?.email}
               </ListItemText>
             </ListItemButton>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <ListItemButton
+                sx={[
+                  {
+                    minHeight: 48,
+                    px: 2.5,
+                  },
+                  open
+                    ? {
+                        justifyContent: "initial",
+                      }
+                    : {
+                        justifyContent: "center",
+                      },
+                ]}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  <PersonOutlineIcon />
+                </ListItemIcon>
+                <ListItemText
+                  //primary={text}
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                >
+                  Login
+                </ListItemText>
+              </ListItemButton>
+            </Link>
+          )}
         </ListItem>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
