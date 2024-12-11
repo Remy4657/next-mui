@@ -27,7 +27,7 @@ import axios from "axios";
 import { AuthContext } from "./contexts/AuthContext";
 
 // ** auth
-import { useAuth } from "./hooks/useAuth";
+import { UseAuth } from "./hooks/UseAuth";
 
 // ** import file
 import Loading from "./component/common/loading";
@@ -277,7 +277,7 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [listData, setListData] = React.useState([]);
 
-  const { user, loading } = useAuth();
+  const { user, loading } = UseAuth();
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -342,12 +342,10 @@ export default function EnhancedTable() {
   const fetchData = async () => {
     const res = await axios.get("http://localhost:3000/post/api");
     setListData(res.data.data);
-    console.log("res: ", res);
   };
   React.useEffect(() => {
     fetchData();
   }, []);
-  console.log("user: ", user);
 
   if (loading) {
     return <Loading />;

@@ -17,7 +17,7 @@ import ColorModeSelect from "../theme/ColorModeSelect";
 import { useRouter } from "next/navigation";
 
 // ** Hooks
-import { useAuth } from "../hooks/useAuth";
+import { UseAuth } from "../hooks/UseAuth";
 
 // ** storage
 import { setLocalUserData } from "../helper/storage";
@@ -77,7 +77,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const router = useRouter();
 
   // ** context
-  const { user, loading, login } = useAuth();
+  const { user, loading, login } = UseAuth();
 
   const handleClickOpen = () => {
     setOpen(true);

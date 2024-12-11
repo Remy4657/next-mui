@@ -12,7 +12,7 @@ import SidebarWrapper from "./component/SidebarWrapper/page";
 import { AuthProvider } from "./contexts/AuthContext";
 
 // ** auth hoock
-import { useAuth } from "./hooks/useAuth";
+import { UseAuth } from "./hooks/UseAuth";
 
 // axios instance
 import { AxiosInterceptor } from "./helper/axios";

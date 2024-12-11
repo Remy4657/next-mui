@@ -12,10 +12,10 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
 // ** import file
-import { useAuth } from "src/app/hooks/useAuth";
+import { UseAuth } from "src/app/hooks/UseAuth";
 
 export default function AccountMenu() {
-  const { logout } = useAuth();
+  const { logout } = UseAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

@@ -25,7 +25,7 @@ import { FC, useEffect } from "react";
 import { UserDataType } from "../../contexts/types";
 
 // ** hooks
-import { useAuth } from "../../hooks/useAuth";
+import { UseAuth } from "../../hooks/UseAuth";
 
 // ** intercepter
 import { refreshToken } from "src/app/services/auth";
@@ -89,7 +89,7 @@ const addRequestQueue = (config: AxiosRequestConfig): Promise<any> => {
 
 const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
   const router = useRouter();
-  const { setUser, user } = useAuth();
+  const { setUser, user } = UseAuth();
 
   useEffect(() => {
     const reqInterceptor = instanceAxios.interceptors.request.use(
@@ -114,6 +114,7 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
                   {
                     headers: {
                       Authorization: `Bearer ${refreshToken}`,
+                      cookies: `${refreshToken}`
                     },
                   }
                 )
