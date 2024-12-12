@@ -1,4 +1,4 @@
-export const BASE_URL = `${process.env.NEXT_PUBLIC_API_HOST2}/api`;
+export const BASE_URL = `${process.env.NEXT_PUBLIC_API_HOST}/api`;
 
 export const API_ENDPOINT = {
   AUTH: {

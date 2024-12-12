@@ -36,7 +36,7 @@ type TAxiosInterceptor = {
 
 const instanceAxios = axios.create({
   baseURL: BASE_URL,
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 //instanceAxios.defaults.withCredentials = true; // use to set value of cookie
@@ -114,7 +114,7 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
                   {
                     headers: {
                       Authorization: `Bearer ${refreshToken}`,
-                      cookies: `${refreshToken}`
+                      cookies: `${refreshToken}`,
                     },
                   }
                 )

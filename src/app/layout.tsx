@@ -49,9 +49,7 @@ export default function RootLayout({
             <CssBaseline enableColorScheme />
             <AuthProvider>
               <AxiosInterceptor>
-                <SidebarWrapper>
-                  <Suspense fallback={<Loading />}>{children}</Suspense>
-                </SidebarWrapper>
+                <SidebarWrapper>{children}</SidebarWrapper>
               </AxiosInterceptor>
             </AuthProvider>
           </ThemeProvider>

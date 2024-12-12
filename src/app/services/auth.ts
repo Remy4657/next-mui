@@ -14,7 +14,10 @@ import {
 } from "../types/auth";
 
 export const loginAuth = async (data: TLoginAuth) => {
-  const res = await axios.post(`${API_ENDPOINT.AUTH.INDEX}/login`, data);
+  const res = await instanceAxios.post(
+    `${API_ENDPOINT.AUTH.INDEX}/login`,
+    data
+  );
 
   return res.data;
 };

@@ -1,6 +1,7 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -31,6 +32,15 @@ export async function encrypt(payload: SessionPayload) {
     .setIssuedAt()
     .setExpirationTime("7d")
     .sign(encodedKey);
+}
+export async function decodeToken(token: string) {
+  try {
+    const decode = jwtDecode(token);
+    console.log("decode: ", decode);
+    return decode;
+  } catch (e) {
+    console.log("error: ", e);
+  }
 }
 
 export async function decrypt(session: string | undefined = "") {

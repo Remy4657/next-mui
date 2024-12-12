@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Sidebar from "../Sidebar/page";
+import { useRouter } from "next/router";
 
 export default function SidebarWrapper({
   children,
@@ -9,7 +10,7 @@ export default function SidebarWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/login";
+  const isLoginPage = pathname === "/login" || pathname === "/401";
 
   return (
     <>
