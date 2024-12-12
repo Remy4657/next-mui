@@ -21,6 +21,7 @@ import { API_ENDPOINT } from "../config/api";
 
 // ** services
 import { loginAuth } from "../services/auth";
+import { logoutAuth } from "../services/auth";
 
 // ** helper
 import { clearLocalUserData, setLocalUserData } from "../helper/storage";
@@ -35,6 +36,7 @@ const defaultProvider: AuthValuesType = {
   setUser: () => null,
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
 };
 
 const AuthContext = createContext(defaultProvider);
@@ -57,18 +59,14 @@ const AuthProvider = ({ children }: Props) => {
       const storedToken = window.localStorage.getItem("accessToken");
 
       if (storedToken) {
-        alert("have accessToken");
         setLoading(true);
         await instanceAxios
-          .get(API_ENDPOINT.AUTH.AUTH_ME)
+          .get(`${API_ENDPOINT.AUTH.AUTH_ME}`)
           .then(async (response) => {
-            console.log("response.data.data: ", response);
             setLoading(false);
             setUser({ ...response.data.data });
           })
           .catch((e) => {
-            alert("error: ");
-
             clearLocalUserData();
             setUser(null);
             setLoading(false);
@@ -92,22 +90,30 @@ const AuthProvider = ({ children }: Props) => {
       password: params.password,
     })
       .then(async (response) => {
-        console.log("response: ", response);
         setLocalUserData(
           JSON.stringify(response.data),
-          response.data.token,
-          response.data.refreshToken
+          response.data.access_token,
+          response.data.refresh_token
         );
         // toast.success(t("Login_success"));
         // const returnUrl = router.query.returnUrl;
         setUser({ ...response.data });
         const redirectURL = "/";
+        //window.location.href("http://localhost:3000/");
         router.replace(redirectURL as string);
       })
 
       .catch((err) => {
         if (errorCallback) errorCallback(err);
       });
+  };
+  const handleLogout = () => {
+    logoutAuth().then((res) => {
+      setUser(null);
+      clearLocalUserData();
+      // signOut()
+      router.replace("/login");
+    });
   };
 
   const values = {
@@ -116,6 +122,7 @@ const AuthProvider = ({ children }: Props) => {
     setUser,
     setLoading,
     login: handleLogin,
+    logout: handleLogout,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

@@ -13,7 +13,7 @@ const Post = () => {
   const fetchListPost = async () => {
     const res = await fetch("http://localhost:3000/post/api")
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => console.log("data: ", data));
   };
 
   useEffect(() => {

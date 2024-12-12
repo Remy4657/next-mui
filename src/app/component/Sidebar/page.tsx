@@ -8,29 +8,31 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import Link from "next/link";
 import ColorModeSelect from "../../theme/ColorModeSelect";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 // ** icon
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+
+// ** Import file
+import AccountMenu from "./AccountMenu/page";
 
 // ** auth
-import { useAuth } from "src/app/hooks/useAuth";
+import { UseAuth } from "src/app/hooks/UseAuth";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -126,7 +128,7 @@ export default function Sidebar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const { user } = useAuth();
+  const { user } = UseAuth();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -184,11 +186,11 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      justifyContent: "initial",
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      justifyContent: "center",
+                    },
                 ]}
               >
                 <ListItemIcon
@@ -199,11 +201,11 @@ export default function Sidebar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   <HomeIcon />
@@ -212,11 +214,11 @@ export default function Sidebar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 >
                   Home
@@ -234,11 +236,11 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      justifyContent: "initial",
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      justifyContent: "center",
+                    },
                 ]}
               >
                 <ListItemIcon
@@ -249,11 +251,11 @@ export default function Sidebar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   <InfoIcon />
@@ -262,11 +264,11 @@ export default function Sidebar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 >
                   About
@@ -298,11 +300,11 @@ export default function Sidebar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   <HomeIcon />
@@ -311,11 +313,11 @@ export default function Sidebar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 >
                   Item parent
@@ -331,11 +333,11 @@ export default function Sidebar() {
                       },
                       open
                         ? {
-                            justifyContent: "initial",
-                          }
+                          justifyContent: "initial",
+                        }
                         : {
-                            justifyContent: "center",
-                          },
+                          justifyContent: "center",
+                        },
                     ]}
                   >
                     <ListItemIcon
@@ -346,11 +348,11 @@ export default function Sidebar() {
                         },
                         open
                           ? {
-                              mr: 3,
-                            }
+                            mr: 3,
+                          }
                           : {
-                              mr: "auto",
-                            },
+                            mr: "auto",
+                          },
                       ]}
                     >
                       <InfoIcon />
@@ -359,11 +361,11 @@ export default function Sidebar() {
                       sx={[
                         open
                           ? {
-                              opacity: 1,
-                            }
+                            opacity: 1,
+                          }
                           : {
-                              opacity: 0,
-                            },
+                            opacity: 0,
+                          },
                       ]}
                     >
                       Item child
@@ -397,11 +399,11 @@ export default function Sidebar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   <HomeIcon />
@@ -410,11 +412,11 @@ export default function Sidebar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 >
                   Item parent
@@ -430,11 +432,11 @@ export default function Sidebar() {
                       },
                       open
                         ? {
-                            justifyContent: "initial",
-                          }
+                          justifyContent: "initial",
+                        }
                         : {
-                            justifyContent: "center",
-                          },
+                          justifyContent: "center",
+                        },
                     ]}
                   >
                     <ListItemIcon
@@ -445,11 +447,11 @@ export default function Sidebar() {
                         },
                         open
                           ? {
-                              mr: 3,
-                            }
+                            mr: 3,
+                          }
                           : {
-                              mr: "auto",
-                            },
+                            mr: "auto",
+                          },
                       ]}
                     >
                       <InfoIcon />
@@ -458,11 +460,11 @@ export default function Sidebar() {
                       sx={[
                         open
                           ? {
-                              opacity: 1,
-                            }
+                            opacity: 1,
+                          }
                           : {
-                              opacity: 0,
-                            },
+                            opacity: 0,
+                          },
                       ]}
                     >
                       Item child
@@ -484,11 +486,11 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      justifyContent: "initial",
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      justifyContent: "center",
+                    },
                 ]}
               >
                 <ListItemIcon
@@ -499,11 +501,11 @@ export default function Sidebar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   <HomeIcon />
@@ -512,11 +514,11 @@ export default function Sidebar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 >
                   About
@@ -537,7 +539,7 @@ export default function Sidebar() {
             left: 0,
           }}
         >
-          <Link href="/login">
+          {user?.email ? (
             <ListItemButton
               sx={[
                 {
@@ -546,11 +548,11 @@ export default function Sidebar() {
                 },
                 open
                   ? {
-                      justifyContent: "initial",
-                    }
+                    justifyContent: "initial",
+                  }
                   : {
-                      justifyContent: "center",
-                    },
+                    justifyContent: "center",
+                  },
               ]}
             >
               <ListItemIcon
@@ -561,31 +563,82 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                        mr: 3,
-                      }
+                      mr: 3,
+                    }
                     : {
-                        mr: "auto",
-                      },
+                      mr: "auto",
+                    },
                 ]}
               >
-                <PersonOutlineIcon />
+                {/* <PersonOutlineIcon /> */}
+                <AccountMenu />
               </ListItemIcon>
               <ListItemText
                 //primary={text}
                 sx={[
                   open
                     ? {
-                        opacity: 1,
-                      }
+                      opacity: 1,
+                    }
                     : {
-                        opacity: 0,
-                      },
+                      opacity: 0,
+                    },
                 ]}
               >
-                {user?.email ? user.email : "Login"}
+                {user?.email}
               </ListItemText>
             </ListItemButton>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <ListItemButton
+                sx={[
+                  {
+                    minHeight: 48,
+                    px: 2.5,
+                  },
+                  open
+                    ? {
+                      justifyContent: "initial",
+                    }
+                    : {
+                      justifyContent: "center",
+                    },
+                ]}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                        mr: 3,
+                      }
+                      : {
+                        mr: "auto",
+                      },
+                  ]}
+                >
+                  <PersonOutlineIcon />
+                </ListItemIcon>
+                <ListItemText
+                  //primary={text}
+                  sx={[
+                    open
+                      ? {
+                        opacity: 1,
+                      }
+                      : {
+                        opacity: 0,
+                      },
+                  ]}
+                >
+                  Login
+                </ListItemText>
+              </ListItemButton>
+            </Link>
+          )}
         </ListItem>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

@@ -54,4 +54,5 @@ export type AuthValuesType = {
   setUser: (value: UserDataType | null) => void;
   setLoading: (value: boolean) => void;
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void;
+  logout: () => void;
 };

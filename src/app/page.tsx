@@ -24,12 +24,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // ** axios
 import axios from "axios";
 
-//* useContext
-import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 
-//const useAuth = () => useContext(AuthContext);
-import { useAuth } from "./hooks/useAuth";
+// ** auth
+import { UseAuth } from "./hooks/UseAuth";
+
+// ** import file
+import Loading from "./component/common/loading";
 
 // import { visuallyHidden } from "@mui/utils";
 
@@ -276,8 +277,7 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [listData, setListData] = React.useState([]);
 
-  const { user, loading } = useAuth();
-
+  const { user, loading } = UseAuth();
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -326,10 +326,6 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -350,6 +346,10 @@ export default function EnhancedTable() {
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="home">
