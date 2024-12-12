@@ -344,7 +344,7 @@ export default function EnhancedTable() {
 
   /* === function cus === */
   const fetchData = async () => {
-    const res = await axios.get("http://192.168.30.107:3000/post/api");
+    const res = await axios.get("http://localhost:3000/post/api");
     setListData(res.data.data);
   };
   React.useEffect(() => {
