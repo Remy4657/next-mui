@@ -14,6 +14,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
+import Container from "@mui/material/Container";
 
 // ** icon
 import IconButton from "@mui/material/IconButton";
@@ -340,7 +341,7 @@ export default function EnhancedTable() {
 
   /* === function cus === */
   const fetchData = async () => {
-    const res = await axios.get("http://localhost:3000/post/api");
+    const res = await axios.get("http://localhost:3002/post/api");
     setListData(res.data.data);
   };
   React.useEffect(() => {
@@ -352,8 +353,17 @@ export default function EnhancedTable() {
   }
 
   return (
-    <div className="home">
-      <Box component="main" sx={{ width: "100%", flexGrow: 1, p: 3 }}>
+    <Container maxWidth="xl">
+      <Box
+        component="main"
+        sx={{
+          width: "100%",
+          flexGrow: 1,
+          p: 3,
+          padding: "0px",
+          margin: "20px 0px",
+        }}
+      >
         <Paper sx={{ width: "100%", mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
@@ -433,6 +443,6 @@ export default function EnhancedTable() {
           />
         </Paper>
       </Box>
-    </div>
+    </Container>
   );
 }

@@ -30,9 +30,9 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/401", req.nextUrl));
     }
 
-    if (isPublicRoute && session?.userId) {
-      return NextResponse.redirect(new URL("/test/dashboard", req.nextUrl));
-    }
+    // if (isPublicRoute && session?.userId) {
+    //   return NextResponse.redirect(new URL("/test/dashboard", req.nextUrl));
+    // }
 
     return NextResponse.next();
   } catch (error) {

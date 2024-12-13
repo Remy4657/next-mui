@@ -10,12 +10,13 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import Link from "next/link";
 
 // ** import file
 import { UseAuth } from "src/app/hooks/UseAuth";
 
 export default function AccountMenu() {
-  const { logout } = UseAuth();
+  const { logout, user } = UseAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,10 +28,11 @@ export default function AccountMenu() {
 
   const handleLogout = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
+    setAnchorEl(null);
     logout();
   };
   return (
-    <React.Fragment>
+    <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -83,10 +85,11 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
+          <Avatar /> {user ? user.email : "My email"}
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+          <Avatar />
+          <Link href="my-profile">My account</Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
@@ -108,6 +111,6 @@ export default function AccountMenu() {
           Logout
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 }
