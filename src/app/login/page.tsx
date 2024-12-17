@@ -13,17 +13,17 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import ColorModeSelect from "../theme/ColorModeSelect";
+import ColorModeSelect from "../../theme/ColorModeSelect";
 import { useRouter } from "next/navigation";
 
 // ** Hooks
-import { UseAuth } from "../hooks/UseAuth";
+import { UseAuth } from "../../hooks/useAuth";
 
 // ** storage
-import { setLocalUserData } from "../helper/storage";
+import { setLocalUserData } from "../../helper/storage";
 
 // ** import file
-import Loading from "../component/common/loading";
+import Loading from "../../component/common/loading";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -113,7 +113,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       email: email,
       password: password,
     });
-    router.push("/");
   };
 
   const validateInputs = () => {
@@ -217,7 +216,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                     fullWidth
                     variant="outlined"
                     color={passwordError ? "error" : "primary"}
-                    value={"123456789Kha@"}
+                    //value={"123456789Kha@"}
                   />
                 </FormControl>
                 <FormControlLabel
@@ -257,10 +256,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 <Typography sx={{ textAlign: "center" }}>
                   Don&apos;t have an account?{" "}
                   <Link
-                    href="/material-ui/getting-started/templates/sign-in/"
+                    href="/register"
                     variant="body2"
                     sx={{ alignSelf: "center" }}
-                    onClick={handleClick}
                   >
                     Sign up
                   </Link>

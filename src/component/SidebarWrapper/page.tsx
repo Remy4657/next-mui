@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 // ** import file
 import Sidebar from "../Sidebar/page";
-import { UseAuth } from "src/app/hooks/UseAuth";
+import { UseAuth } from "../../hooks/useAuth";
 
 // ** import header
 import ResponsiveAppBar from "../header/page";
@@ -17,7 +17,8 @@ export default function SidebarWrapper({
   const { user } = UseAuth();
 
   const pathname = usePathname();
-  const isLoginPage = pathname === "/login" || pathname === "/401";
+  const isLoginPage =
+    pathname === "/login" || pathname === "/register" || pathname === "/401";
 
   return (
     <>

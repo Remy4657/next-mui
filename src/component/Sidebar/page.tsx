@@ -32,7 +32,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccountMenu from "./AccountMenu/page";
 
 // ** auth
-import { UseAuth } from "src/app/hooks/UseAuth";
+import { UseAuth } from "../../hooks/useAuth";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({

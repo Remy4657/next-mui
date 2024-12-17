@@ -13,7 +13,8 @@ import Logout from "@mui/icons-material/Logout";
 import Link from "next/link";
 
 // ** import file
-import { UseAuth } from "src/app/hooks/UseAuth";
+import { UseAuth } from "../../../hooks/useAuth";
+import { useRadioGroup } from "@mui/material";
 
 export default function AccountMenu() {
   const { logout, user } = UseAuth();
@@ -104,12 +105,23 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={(e) => handleLogout(e)}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        {user ? (
+          <MenuItem onClick={(e) => handleLogout(e)}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        ) : (
+          <Link href="/login">
+            <MenuItem>
+              <ListItemIcon>
+                <Avatar />
+              </ListItemIcon>
+              Login
+            </MenuItem>
+          </Link>
+        )}
       </Menu>
     </>
   );

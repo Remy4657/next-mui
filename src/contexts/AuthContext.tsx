@@ -15,6 +15,7 @@ import {
 
 // ** instance axios
 import instanceAxios from "../helper/axios/index";
+import toast from "react-hot-toast";
 
 // ** Config
 import { API_ENDPOINT } from "../config/api";
@@ -95,7 +96,7 @@ const AuthProvider = ({ children }: Props) => {
           response.data.access_token,
           response.data.refresh_token
         );
-        // toast.success(t("Login_success"));
+        toast.success("Login success");
         // const returnUrl = router.query.returnUrl;
         setUser({ ...response.data });
         const redirectURL = "/";
@@ -104,6 +105,7 @@ const AuthProvider = ({ children }: Props) => {
       })
 
       .catch((err) => {
+        toast.error("Email or password wrong");
         if (errorCallback) errorCallback(err);
       });
   };

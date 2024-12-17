@@ -36,10 +36,9 @@ export async function encrypt(payload: SessionPayload) {
 export async function decodeToken(token: string) {
   try {
     const decode = jwtDecode(token);
-    console.log("decode: ", decode);
     return decode;
   } catch (e) {
-    console.log("error: ", e);
+    console.log("error session: ", e);
   }
 }
 

@@ -1,6 +1,6 @@
-import connectDB from "../../config/mongoose";
+import connectDB from "../../../config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
-import Post from "../../config/models/Post";
+import Post from "../../../config/models/Post";
 
 // create
 export async function POST(req: NextRequest) {

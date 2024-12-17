@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 
 // ** import file
-import { UseAuth } from "src/app/hooks/UseAuth";
+import { UseAuth } from "../../hooks/useAuth";
 import AccountMenu from "../Sidebar/AccountMenu/page";
 
 const pages = ["About", "Pricing", "Blog"];
@@ -54,7 +54,9 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Link href="/">
+            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          </Link>
           <Typography
             variant="h6"
             noWrap
@@ -70,7 +72,6 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           ></Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -122,7 +123,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGOhghgf
+            LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (

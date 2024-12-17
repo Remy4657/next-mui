@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "./app/test/lib/session";
-import { decodeToken } from "./app/test/lib/session";
+import { decodeToken } from "./lib/session";
 
 const protectedRoutes = ["/about"];
 const publicRoutes = ["/test/login"];
@@ -18,13 +17,10 @@ export default async function middleware(req: NextRequest) {
     //const access_token = localStorage.getItem('accessToken')
 
     const cookieStore = await cookies();
-    const cookie = cookieStore.get("refresh_token")?.value;
-    const session = (await decodeToken(cookie as string)) as Session;
-    console.log("cookie: ", cookie);
-    console.log("decode cookie: ", typeof session);
-    // console.log("isProtectedRoute: ", isProtectedRoute);
-    // console.log("isPublicRoute: ", isPublicRoute);
-    console.log("path: ", path);
+    if (cookieStore.get("refresh_token")?.value) {
+      var cookie = cookieStore.get("refresh_token")?.value as string;
+    }
+    const session = (await decodeToken(cookie)) as Session;
 
     if (isProtectedRoute && session?.permissions?.includes("USER.GRANTED")) {
       return NextResponse.redirect(new URL("/401", req.nextUrl));
@@ -36,6 +32,6 @@ export default async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    console.log("error: ", error);
+    console.log("error middleware: ", error);
   }
 }

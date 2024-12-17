@@ -25,13 +25,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // ** axios
 import axios from "axios";
 
-import { AuthContext } from "./contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 // ** auth
-import { UseAuth } from "./hooks/UseAuth";
+import { UseAuth } from "../hooks/useAuth";
 
 // ** import file
-import Loading from "./component/common/loading";
+import Loading from "../component/common/loading";
 
 // import { visuallyHidden } from "@mui/utils";
 

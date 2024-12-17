@@ -25,10 +25,10 @@ import { FC, useEffect } from "react";
 import { UserDataType } from "../../contexts/types";
 
 // ** hooks
-import { UseAuth } from "../../hooks/UseAuth";
+import { UseAuth } from "../../hooks/useAuth";
 
 // ** intercepter
-import { refreshToken } from "src/app/services/auth";
+import { refreshToken } from "../../services/auth";
 
 type TAxiosInterceptor = {
   children: React.ReactNode;
