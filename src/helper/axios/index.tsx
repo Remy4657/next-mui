@@ -101,49 +101,53 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
           if (decodedAccessToken?.exp > Date.now() / 1000) {
             config.headers["Authorization"] = `Bearer ${accessToken}`;
           } else if (refreshToken) {
-            if (!isRefreshing) {
-              isRefreshing = true;
+            let decodedRefreshToken: any = {};
+            decodedRefreshToken = jwtDecode(refreshToken);
+            if (decodedRefreshToken?.exp > Date.now() / 1000) {
+              if (!isRefreshing) {
+                isRefreshing = true;
 
-              const configCredentials: AxiosRequestConfig = {
-                withCredentials: true, // Automatically send cookies with the request
-              };
-              await axios
-                .post(
-                  `${API_ENDPOINT.AUTH.INDEX}/refresh-token`,
-                  {},
-                  {
-                    headers: {
-                      Authorization: `Bearer ${refreshToken}`,
-                      cookies: `${refreshToken}`,
-                    },
-                  }
-                )
-                .then((res) => {
-                  const newAccessToken = res?.data.data.access_token;
-                  if (newAccessToken) {
-                    config.headers["Authorization"] =
-                      `Bearer ${newAccessToken}`;
-                    processQueue(null, newAccessToken);
-                    if (accessToken) {
-                      setLocalUserData(
-                        JSON.stringify(user),
-                        newAccessToken,
-                        refreshToken
-                      );
+                const configCredentials: AxiosRequestConfig = {
+                  withCredentials: true, // Automatically send cookies with the request
+                };
+                await axios
+                  .post(
+                    `${API_ENDPOINT.AUTH.INDEX}/refresh-token`,
+                    {},
+                    {
+                      headers: {
+                        Authorization: `Bearer ${refreshToken}`,
+                        cookies: `${refreshToken}`,
+                      },
                     }
-                  } else {
+                  )
+                  .then((res) => {
+                    const newAccessToken = res?.data.data.access_token;
+                    if (newAccessToken) {
+                      config.headers["Authorization"] =
+                        `Bearer ${newAccessToken}`;
+                      processQueue(null, newAccessToken);
+                      if (accessToken) {
+                        setLocalUserData(
+                          JSON.stringify(user),
+                          newAccessToken,
+                          refreshToken
+                        );
+                      }
+                    } else {
+                      handleRedirectLogin(router, setUser);
+                    }
+                  })
+                  .catch((e) => {
+                    processQueue(e, null);
                     handleRedirectLogin(router, setUser);
-                  }
-                })
-                .catch((e) => {
-                  processQueue(e, null);
-                  handleRedirectLogin(router, setUser);
-                })
-                .finally(() => {
-                  isRefreshing = false;
-                });
-            } else {
-              return await addRequestQueue(config);
+                  })
+                  .finally(() => {
+                    isRefreshing = false;
+                  });
+              } else {
+                return await addRequestQueue(config);
+              }
             }
           }
         }

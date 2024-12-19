@@ -216,7 +216,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                     fullWidth
                     variant="outlined"
                     color={passwordError ? "error" : "primary"}
-                    //value={"123456789Kha@"}
+                    value={"123456789Kha@"}
                   />
                 </FormControl>
                 <FormControlLabel

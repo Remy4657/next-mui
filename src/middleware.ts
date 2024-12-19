@@ -7,6 +7,7 @@ const publicRoutes = ["/test/login"];
 
 interface Session {
   permissions: string[];
+  exp: number;
 }
 export default async function middleware(req: NextRequest) {
   try {
@@ -17,12 +18,19 @@ export default async function middleware(req: NextRequest) {
     //const access_token = localStorage.getItem('accessToken')
 
     const cookieStore = await cookies();
-    if (cookieStore.get("refresh_token")?.value) {
-      var cookie = cookieStore.get("refresh_token")?.value as string;
+    if (cookieStore.get("accessToken")) {
+      var cookie = cookieStore.get("accessToken")?.value as string;
+      var session = (await decodeToken(cookie)) as Session;
     }
-    const session = (await decodeToken(cookie)) as Session;
-
-    if (isProtectedRoute && session?.permissions?.includes("USER.GRANTED")) {
+    // if (session?.exp < Date.now() / 1000) {
+    //   return NextResponse.redirect(new URL("/login", req.nextUrl));
+    // }
+    if (
+      isProtectedRoute &&
+      // access token don't expired
+      //session?.exp > Date.now() / 1000 &&
+      !session?.permissions?.includes("USER.GRANTED")
+    ) {
       return NextResponse.redirect(new URL("/401", req.nextUrl));
     }
 

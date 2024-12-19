@@ -55,10 +55,11 @@ const AuthProvider = ({ children }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // ** get user info when refresh page
   useEffect(() => {
+    alert("me");
     const initAuth = async (): Promise<void> => {
       const storedToken = window.localStorage.getItem("accessToken");
-
       if (storedToken) {
         setLoading(true);
         await instanceAxios
@@ -68,12 +69,14 @@ const AuthProvider = ({ children }: Props) => {
             setUser({ ...response.data.data });
           })
           .catch((e) => {
-            clearLocalUserData();
-            setUser(null);
-            setLoading(false);
-            if (!pathname.includes("login")) {
-              router.replace("/login");
-            }
+            logoutAuth().then((res) => {
+              clearLocalUserData();
+              setUser(null);
+              setLoading(false);
+              if (!pathname.includes("login")) {
+                router.replace("/login");
+              }
+            });
           });
       } else {
         setLoading(false);

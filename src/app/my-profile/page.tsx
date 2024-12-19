@@ -82,7 +82,6 @@ const MyProfilePage: NextPage<TProps> = () => {
   const [optionCities, setOptionCities] = useState<
     { label: string; value: string }[]
   >([]);
-  console.log(optionRoles);
 
   // ** Hooks
 
@@ -166,7 +165,6 @@ const MyProfilePage: NextPage<TProps> = () => {
     setLoading(true);
     await getAllRoles()
       .then((res) => {
-        console.log("res: ", res);
         const data = res?.data.roles;
         if (data) {
           setOptionRoles(

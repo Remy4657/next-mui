@@ -15,14 +15,12 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 
 // ** import file
-import { UseAuth } from "../../hooks/useAuth";
 import AccountMenu from "../Sidebar/AccountMenu/page";
 
 const pages = ["About", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
-  const { logout } = UseAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -43,11 +41,6 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-  };
-
-  const handleLogout = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    logout();
   };
 
   return (
