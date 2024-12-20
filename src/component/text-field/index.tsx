@@ -2,6 +2,15 @@
 
 // ** Mui Imports
 import { TextFieldProps, TextField, styled } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  FormHelperText,
+  IconButton,
+  InputLabel,
+  useTheme,
+} from "@mui/material";
 
 const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
   return {
@@ -15,7 +24,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
     "& .MuiInputBase-root": {
       borderRadius: 8,
       backgroundColor: "transparent !important",
-      borderColor: `rgba(255, 99, 71, 0.2)`,
+      borderColor: "#cccc",
       borderStyle: "solid",
       borderWidth: "1px",
       transition: theme.transitions.create(["border-color", "box-shadow"], {

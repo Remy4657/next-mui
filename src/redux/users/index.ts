@@ -6,6 +6,7 @@ import {
   changePasswordMeAsync,
   forgotPasswordAuthAsync,
   registerAuthAsync,
+  updateAuthMeAsync,
 } from "src/redux/users/actions";
 
 // * type
@@ -95,6 +96,27 @@ export const authSlice = createSlice({
       state.isError = true;
       state.message = "";
       state.typeError = "";
+    });
+
+    // ** update me
+    builder.addCase(updateAuthMeAsync.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateAuthMeAsync.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccessUpdateMe = !!action.payload?.data?.email;
+      state.isErrorUpdateMe = !action.payload?.data?.email;
+      state.messageUpdateMe = action.payload?.message;
+      state.typeError = action.payload?.typeError;
+      state.userData = action.payload.data;
+    });
+    builder.addCase(updateAuthMeAsync.rejected, (state, action) => {
+      state.isLoading = false;
+      state.typeError = "";
+      state.isSuccessUpdateMe = false;
+      state.isErrorUpdateMe = false;
+      state.messageUpdateMe = "";
+      state.userData = null;
     });
   },
 });

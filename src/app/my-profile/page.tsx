@@ -21,7 +21,7 @@ import Container from "@mui/material/Container";
 // ** Components
 import CustomTextField from "src/component/text-field";
 import Icon from "src/component/Icon";
-// import WrapperFileUpload from "src/components/wrapper-file-upload";
+import WrapperFileUpload from "src/component/wrapper-file-upload";
 
 // ** form
 import { Controller, useForm } from "react-hook-form";
@@ -248,7 +248,7 @@ const MyProfilePage: NextPage<TProps> = () => {
 
   return (
     <>
-      {loading || (isLoading && <Spinner />)}
+      {isLoading && <Spinner />}
       <Container maxWidth="xl">
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" noValidate>
           <Grid
@@ -269,7 +269,14 @@ const MyProfilePage: NextPage<TProps> = () => {
             >
               <Box sx={{ height: "100%", width: "100%", display: "flex" }}>
                 <Grid container spacing={4}>
-                  <Grid item md={12} xs={12}>
+                  <Grid
+                    item
+                    md={12}
+                    xs={12}
+                    sx={{
+                      paddingTop: "0px !important",
+                    }}
+                  >
                     <Box
                       sx={{
                         width: "100%",
@@ -308,26 +315,26 @@ const MyProfilePage: NextPage<TProps> = () => {
                           </Avatar>
                         )}
                       </Box>
-                      {/* <WrapperFileUpload
-                      uploadFunc={handleUploadAvatar}
-                      objectAcceptFile={{
-                        "image/jpeg": [".jpg", ".jpeg"],
-                        "image/png": [".png"],
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          width: "auto",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
+                      <WrapperFileUpload
+                        uploadFunc={handleUploadAvatar}
+                        objectAcceptFile={{
+                          "image/jpeg": [".jpg", ".jpeg"],
+                          "image/png": [".png"],
                         }}
                       >
-                        <Icon icon="ph:camera-thin"></Icon>
-                        {avatar ? t("Change_avatar") : t("Upload_avatar")}
-                      </Button>
-                    </WrapperFileUpload> */}
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            width: "auto",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <Icon icon="ph:camera-thin"></Icon>
+                          {avatar ? "Change avatar" : "Upload avatar"}
+                        </Button>
+                      </WrapperFileUpload>
                     </Box>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -369,7 +376,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                                 display: "block",
                                 color: errors?.role
                                   ? theme.palette.error.main
-                                  : `rgba(255, 99, 71, 0.42)`,
+                                  : theme.palette.text.secondary,
                               }}
                             >
                               {"Role"}{" "}
@@ -426,11 +433,11 @@ const MyProfilePage: NextPage<TProps> = () => {
                       render={({ field: { onChange, onBlur, value } }) => (
                         <CustomTextField
                           fullWidth
-                          label={"Full_name"}
+                          label={"Full name"}
                           onChange={onChange}
                           onBlur={onBlur}
                           value={value}
-                          placeholder={"Enter_your_full_name"}
+                          placeholder={"Enter your full name"}
                           error={Boolean(errors?.fullName)}
                           helperText={errors?.fullName?.message}
                         />
@@ -467,7 +474,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                               display: "block",
                               color: errors?.city
                                 ? theme.palette.error.main
-                                : `rgba(255, 99, 71, 0.42)`,
+                                : theme.palette.text.secondary,
                             }}
                           >
                             {"City"}
@@ -502,19 +509,14 @@ const MyProfilePage: NextPage<TProps> = () => {
                         <CustomTextField
                           required
                           fullWidth
-                          label={"Phone_number"}
+                          label={"Phone number"}
                           onChange={(e) => {
                             const numValue = e.target.value.replace(/\D/g, "");
                             onChange(numValue);
                           }}
-                          inputProps={{
-                            inputMode: "numeric",
-                            pattern: "[0-9]*",
-                            minLength: 8,
-                          }}
                           onBlur={onBlur}
                           value={value}
-                          placeholder={"Enter_your_phone"}
+                          placeholder={"Enter your phone"}
                           error={Boolean(errors?.phoneNumber)}
                           helperText={errors?.phoneNumber?.message}
                         />

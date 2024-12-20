@@ -57,7 +57,6 @@ const AuthProvider = ({ children }: Props) => {
 
   // ** get user info when refresh page
   useEffect(() => {
-    alert("me");
     const initAuth = async (): Promise<void> => {
       const storedToken = window.localStorage.getItem("accessToken");
       if (storedToken) {
