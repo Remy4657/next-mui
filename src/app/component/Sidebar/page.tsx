@@ -178,358 +178,7 @@ export default function Sidebar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <Link href="/">
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  Home
-                </ListItemText>
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <Link href="/about">
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <InfoIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  About
-                </ListItemText>
-              </ListItemButton>
-            </Link>
-          </ListItem>
 
-          {/* dropdown menu */}
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <Accordion sx={{ boxShadow: "none" }}>
-              <AccordionSummary
-                expandIcon={<ArrowDropDownIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-                sx={{
-                  justifyContent: "left",
-                  padding: "0 20px",
-                  height: "48px",
-                  minHeight: "inherit !important",
-                }}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  Item parent
-                </ListItemText>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Link href="/">
-                  <ListItemButton
-                    sx={[
-                      {
-                        minHeight: 48,
-                        px: 2.5,
-                      },
-                      open
-                        ? {
-                            justifyContent: "initial",
-                          }
-                        : {
-                            justifyContent: "center",
-                          },
-                    ]}
-                  >
-                    <ListItemIcon
-                      sx={[
-                        {
-                          minWidth: 0,
-                          justifyContent: "center",
-                        },
-                        open
-                          ? {
-                              mr: 3,
-                            }
-                          : {
-                              mr: "auto",
-                            },
-                      ]}
-                    >
-                      <InfoIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      sx={[
-                        open
-                          ? {
-                              opacity: 1,
-                            }
-                          : {
-                              opacity: 0,
-                            },
-                      ]}
-                    >
-                      Item child
-                    </ListItemText>
-                  </ListItemButton>
-                </Link>
-              </AccordionDetails>
-            </Accordion>
-          </ListItem>
-          {/* end dropdow menu */}
-          {/* dropdown menu */}
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <Accordion sx={{ boxShadow: "none" }}>
-              <AccordionSummary
-                expandIcon={<ArrowDropDownIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-                sx={{
-                  justifyContent: "left",
-                  padding: "0 20px",
-                  height: "48px",
-                  minHeight: "inherit !important",
-                }}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  Item parent
-                </ListItemText>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Link href="/">
-                  <ListItemButton
-                    sx={[
-                      {
-                        minHeight: 48,
-                        px: 2.5,
-                      },
-                      open
-                        ? {
-                            justifyContent: "initial",
-                          }
-                        : {
-                            justifyContent: "center",
-                          },
-                    ]}
-                  >
-                    <ListItemIcon
-                      sx={[
-                        {
-                          minWidth: 0,
-                          justifyContent: "center",
-                        },
-                        open
-                          ? {
-                              mr: 3,
-                            }
-                          : {
-                              mr: "auto",
-                            },
-                      ]}
-                    >
-                      <InfoIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      sx={[
-                        open
-                          ? {
-                              opacity: 1,
-                            }
-                          : {
-                              opacity: 0,
-                            },
-                      ]}
-                    >
-                      Item child
-                    </ListItemText>
-                  </ListItemButton>
-                </Link>
-              </AccordionDetails>
-            </Accordion>
-          </ListItem>
-          {/* end dropdow menu */}
-
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <Link href="/about">
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  About
-                </ListItemText>
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        </List>
         <Divider />
 
         <ListItem
@@ -551,11 +200,11 @@ export default function Sidebar() {
                 },
                 open
                   ? {
-                      justifyContent: "initial",
-                    }
+                    justifyContent: "initial",
+                  }
                   : {
-                      justifyContent: "center",
-                    },
+                    justifyContent: "center",
+                  },
               ]}
             >
               <ListItemIcon
@@ -566,11 +215,11 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                        mr: 3,
-                      }
+                      mr: 3,
+                    }
                     : {
-                        mr: "auto",
-                      },
+                      mr: "auto",
+                    },
                 ]}
               >
                 {/* <PersonOutlineIcon /> */}
@@ -581,66 +230,18 @@ export default function Sidebar() {
                 sx={[
                   open
                     ? {
-                        opacity: 1,
-                      }
+                      opacity: 1,
+                    }
                     : {
-                        opacity: 0,
-                      },
+                      opacity: 0,
+                    },
                 ]}
               >
                 {user?.email}
               </ListItemText>
             </ListItemButton>
           ) : (
-            <Link href="/login">
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  <PersonOutlineIcon />
-                </ListItemIcon>
-                <ListItemText
-                  //primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                >
-                  Login
-                </ListItemText>
-              </ListItemButton>
-            </Link>
+           
           )}
         </ListItem>
       </Drawer>

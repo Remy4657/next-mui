@@ -104,9 +104,9 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
             if (!isRefreshing) {
               isRefreshing = true;
 
-              const configCredentials: AxiosRequestConfig = {
-                withCredentials: true, // Automatically send cookies with the request
-              };
+              // const configCredentials: AxiosRequestConfig = {
+              //   withCredentials: true, // Automatically send cookies with the request
+              // };
               await axios
                 .post(
                   `${API_ENDPOINT.AUTH.INDEX}/refresh-token`,
