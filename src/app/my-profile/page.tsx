@@ -437,7 +437,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                           onChange={onChange}
                           onBlur={onBlur}
                           value={value}
-                          placeholder={"Enter your full name"}
+                          placeholder="Enter your full name"
                           error={Boolean(errors?.fullName)}
                           helperText={errors?.fullName?.message}
                         />
