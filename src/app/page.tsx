@@ -342,18 +342,19 @@ export default function EnhancedTable() {
     [order, orderBy, page, rowsPerPage, listData]
   );
 
-  /* === function cus === */
+  /* == function cus == */
+
   const fetchData = async () => {
-    const res = await axios.get("http://localhost:3000/post/api");
-    setListData(res.data.data);
-    await instanceAxios
-      .get(`${API_ENDPOINT.AUTH.AUTH_ME}`)
-      .then(async (response) => {
-        setUser({ ...response.data.data });
-      })
-      .catch((e) => {
-        console.log("error: ", e);
-      });
+    // const res = await axios.get("http://localhost:3000/post/api");
+    // setListData(res.data.data);
+    // await instanceAxios
+    //   .get(`${API_ENDPOINT.AUTH.AUTH_ME}`)
+    //   .then(async (response) => {
+    //     setUser({ ...response.data.data });
+    //   })
+    //   .catch((e) => {
+    //     console.log("error: ", e);
+    //   });
   };
   React.useEffect(() => {
     fetchData();

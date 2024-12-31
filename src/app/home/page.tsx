@@ -14,6 +14,8 @@ import { getAllProductsPublic } from "src/services/product";
 // ** component
 import CardProduct from "src/component/product/CardProduct";
 import NoData from "src/component/no-data";
+import Spinner from "src/component/spinner";
+import CardSkeleton from "src/component/product/CardSkeleton";
 
 interface TProductPublicState {
   data: TProduct[];
@@ -42,7 +44,7 @@ export default function BasicGrid() {
   const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
     {}
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [productsPublic, setProductsPublic] = useState<TProductPublicState>({
     data: [],
     total: 0,
@@ -74,37 +76,65 @@ export default function BasicGrid() {
   }, []);
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ flexGrow: 1, marginTop: 10 }}>
-        <Grid container spacing={2} sx={{ width: "100%" }}>
-          <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
-            <Item>xs=4</Item>
+    <>
+      {loading && <Spinner />}
+      <Container maxWidth="xl">
+        <Box sx={{ flexGrow: 1, marginTop: 10 }}>
+          <Grid container spacing={2} sx={{ width: "100%" }}>
+            <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
+              <Item>xs=4</Item>
+            </Grid>
+            <Grid container item xs={9}>
+              {loading ? (
+                <Grid
+                  container
+                  spacing={{
+                    md: 6,
+                    xs: 4,
+                  }}
+                >
+                  {Array.from({ length: 6 }).map((_, index) => {
+                    return (
+                      <Grid item key={index} md={4} sm={6} xs={12}>
+                        <CardSkeleton />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  spacing={{
+                    md: 6,
+                    xs: 4,
+                  }}
+                >
+                  {productsPublic?.data?.length > 0 ? (
+                    <>
+                      {productsPublic?.data?.map((item: TProduct) => {
+                        return (
+                          <Grid item key={item._id} md={4} sm={6} xs={12}>
+                            <CardProduct item={item} />
+                          </Grid>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <Box sx={{ width: "100%", mt: 10 }}>
+                      <NoData
+                        widthImage="60px"
+                        heightImage="60px"
+                        textNodata={"No product"}
+                      />
+                    </Box>
+                  )}
+                </Grid>
+              )}
+              <Box mt={6}></Box>
+            </Grid>
           </Grid>
-          <Grid container item xs={9}>
-            {productsPublic?.data?.length > 0 ? (
-              <>
-                {productsPublic?.data?.map((item: TProduct) => {
-                  return (
-                    <Grid item key={item._id} md={3} sm={3} xs={3}>
-                      <Item>
-                        <CardProduct item={item} />
-                      </Item>
-                    </Grid>
-                  );
-                })}
-              </>
-            ) : (
-              <Box sx={{ width: "100%", mt: 10 }}>
-                <NoData
-                  widthImage="60px"
-                  heightImage="60px"
-                  textNodata={"No_product"}
-                />
-              </Box>
-            )}
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </>
   );
 }
