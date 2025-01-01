@@ -11,9 +11,9 @@ const Post = () => {
   const [listPost, setListPost] = useState<TPost[]>([]);
 
   const fetchListPost = async () => {
-    const res = await fetch("http://localhost:3000/post/api")
-      .then((res) => res.json())
-      .then((data) => console.log("data: ", data));
+    const res = await fetch("http://localhost:3000/post/api").then((res) =>
+      res.json()
+    );
   };
 
   useEffect(() => {

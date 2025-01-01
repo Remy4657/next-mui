@@ -24,14 +24,17 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 
 // ** axios
 import axios from "axios";
+// ** instance axios
+import instanceAxios from "../helper/axios/index";
 
-import { AuthContext } from "./contexts/AuthContext";
+// ** Config
+import { API_ENDPOINT } from "../config/api";
 
 // ** auth
-import { UseAuth } from "./hooks/UseAuth";
+import { UseAuth } from "../hooks/useAuth";
 
 // ** import file
-import Loading from "./component/common/loading";
+import Loading from "../component/common/loading";
 
 // import { visuallyHidden } from "@mui/utils";
 
@@ -278,7 +281,7 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [listData, setListData] = React.useState([]);
 
-  const { user, loading } = UseAuth();
+  const { user, loading, setUser } = UseAuth();
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -339,10 +342,19 @@ export default function EnhancedTable() {
     [order, orderBy, page, rowsPerPage, listData]
   );
 
-  /* === function cus === */
+  /* == function cus == */
+
   const fetchData = async () => {
-    const res = await axios.get("http://localhost:3000/post/api");
-    setListData(res.data.data);
+    // const res = await axios.get("http://localhost:3000/post/api");
+    // setListData(res.data.data);
+    // await instanceAxios
+    //   .get(`${API_ENDPOINT.AUTH.AUTH_ME}`)
+    //   .then(async (response) => {
+    //     setUser({ ...response.data.data });
+    //   })
+    //   .catch((e) => {
+    //     console.log("error: ", e);
+    //   });
   };
   React.useEffect(() => {
     fetchData();

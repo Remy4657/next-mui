@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "./app/test/lib/session";
-import { decodeToken } from "./app/test/lib/session";
+import { decodeToken } from "./lib/session";
 
 const protectedRoutes = ["/about"];
 const publicRoutes = ["/test/login"];
 
 interface Session {
   permissions: string[];
+  exp: number;
 }
 export default async function middleware(req: NextRequest) {
   try {
@@ -18,15 +18,19 @@ export default async function middleware(req: NextRequest) {
     //const access_token = localStorage.getItem('accessToken')
 
     const cookieStore = await cookies();
-    const cookie = cookieStore.get("refresh_token")?.value;
-    const session = (await decodeToken(cookie as string)) as Session;
-    console.log("cookie: ", cookie);
-    console.log("decode cookie: ", typeof session);
-    // console.log("isProtectedRoute: ", isProtectedRoute);
-    // console.log("isPublicRoute: ", isPublicRoute);
-    console.log("path: ", path);
-
-    if (isProtectedRoute && session?.permissions?.includes("USER.GRANTED")) {
+    if (cookieStore.get("accessToken")) {
+      var cookie = cookieStore.get("accessToken")?.value as string;
+      var session = (await decodeToken(cookie)) as Session;
+    }
+    // if (session?.exp < Date.now() / 1000) {
+    //   return NextResponse.redirect(new URL("/login", req.nextUrl));
+    // }
+    if (
+      isProtectedRoute &&
+      // access token don't expired
+      //session?.exp > Date.now() / 1000 &&
+      !session?.permissions?.includes("USER.GRANTED")
+    ) {
       return NextResponse.redirect(new URL("/401", req.nextUrl));
     }
 
@@ -36,6 +40,6 @@ export default async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    console.log("error: ", error);
+    console.log("error middleware: ", error);
   }
 }

@@ -1,117 +1,140 @@
 "use client";
 import * as React from "react";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
-import LayersIcon from "@mui/icons-material/Layers";
-import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import { useDemoRouter } from "@toolpad/core/internal";
-import { useRouter } from "next/router";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+// ** react
+import { useState } from "react";
+// ** type
+import { TProduct } from "../../types/product";
+// ** service
+import { getAllProductsPublic } from "src/services/product";
+// ** component
+import CardProduct from "src/component/product/CardProduct";
+import NoData from "src/component/no-data";
+import Spinner from "src/component/spinner";
+import CardSkeleton from "src/component/product/CardSkeleton";
 
-const NAVIGATION: Navigation = [
-  {
-    kind: "header",
-    title: "Main items",
-  },
-  {
-    segment: "dashboard",
-    title: "Dashboard",
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: "orders",
-    title: "Orders",
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    kind: "divider",
-  },
-  {
-    kind: "header",
-    title: "Analytics",
-  },
-  {
-    segment: "reports",
-    title: "Reports",
-    icon: <BarChartIcon />,
-    children: [
-      {
-        segment: "sales",
-        title: "Sales",
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: "traffic",
-        title: "Traffic",
-        icon: <DescriptionIcon />,
-      },
-    ],
-  },
-  {
-    segment: "integrations",
-    title: "Integrations",
-    icon: <LayersIcon />,
-  },
-];
+interface TProductPublicState {
+  data: TProduct[];
+  total: number;
+}
 
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
+  }),
+}));
 
-function DemoPageContent({ pathname }: { pathname: string }) {
-  return (
-    <Box
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-      }}
-    >
-      <Typography>Dashboard content for {pathname}</Typography>
-    </Box>
+export default function BasicGrid() {
+  const [sortBy, setSortBy] = useState("createdAt desc");
+  const [searchBy, setSearchBy] = useState("");
+  const [pageSize, setPageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [optionTypes, setOptionTypes] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
+    {}
   );
-}
-
-interface DemoProps {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
-  window?: () => Window;
-}
-
-export default function DashboardLayoutBasic(props: DemoProps) {
-  const { window } = props;
-
-  const router = useDemoRouter("/dashboard");
-
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window !== undefined ? window() : undefined;
+  const [loading, setLoading] = useState(true);
+  const [productsPublic, setProductsPublic] = useState<TProductPublicState>({
+    data: [],
+    total: 0,
+  });
+  // fetch api
+  const handleGetListProducts = async () => {
+    setLoading(true);
+    const query = {
+      params: {
+        limit: pageSize,
+        page: page,
+        search: searchBy,
+        order: sortBy,
+      },
+    };
+    await getAllProductsPublic(query).then((res) => {
+      if (res?.data) {
+        console.log("res: ", res);
+        setLoading(false);
+        setProductsPublic({
+          data: res?.data?.products,
+          total: res?.data?.totalCount,
+        });
+      }
+    });
+  };
+  React.useEffect(() => {
+    handleGetListProducts();
+  }, []);
 
   return (
-    // preview-start
-    <DashboardLayout>
-      <DemoPageContent pathname={router.pathname} />
-    </DashboardLayout>
-    // preview-end
+    <>
+      {loading && <Spinner />}
+      <Container maxWidth="xl">
+        <Box sx={{ flexGrow: 1, marginTop: 10 }}>
+          <Grid container spacing={2} sx={{ width: "100%" }}>
+            <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
+              <Item>xs=4</Item>
+            </Grid>
+            <Grid container item xs={9}>
+              {loading ? (
+                <Grid
+                  container
+                  spacing={{
+                    md: 6,
+                    xs: 4,
+                  }}
+                >
+                  {Array.from({ length: 6 }).map((_, index) => {
+                    return (
+                      <Grid item key={index} md={4} sm={6} xs={12}>
+                        <CardSkeleton />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  spacing={{
+                    md: 6,
+                    xs: 4,
+                  }}
+                >
+                  {productsPublic?.data?.length > 0 ? (
+                    <>
+                      {productsPublic?.data?.map((item: TProduct) => {
+                        return (
+                          <Grid item key={item._id} md={4} sm={6} xs={12}>
+                            <CardProduct item={item} />
+                          </Grid>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <Box sx={{ width: "100%", mt: 10 }}>
+                      <NoData
+                        widthImage="60px"
+                        heightImage="60px"
+                        textNodata={"No product"}
+                      />
+                    </Box>
+                  )}
+                </Grid>
+              )}
+              <Box mt={6}></Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+    </>
   );
 }
