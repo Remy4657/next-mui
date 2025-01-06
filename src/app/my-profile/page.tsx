@@ -210,6 +210,7 @@ const MyProfilePage: NextPage<TProps> = () => {
         toast.error(messageUpdateMe);
       } else if (isSuccessUpdateMe) {
         toast.success(messageUpdateMe);
+
         fetchGetAuthMe();
       }
       dispatch(resetInitialState());
