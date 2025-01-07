@@ -24,7 +24,6 @@ export const registerAuthAsync = createAsyncThunk(
   `${serviceName}/register`,
   async (data: any) => {
     const response = await registerAuth(data);
-    console.log("response: ", response);
     if (response?.data) {
       return response;
     }
