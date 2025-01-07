@@ -1,140 +1,94 @@
-"use client";
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-// ** react
-import { useState } from "react";
-// ** type
-import { TProduct } from "../../types/product";
-// ** service
-import { getAllProductsPublic } from "src/services/product";
-// ** component
-import CardProduct from "src/component/product/CardProduct";
-import NoData from "src/component/no-data";
-import Spinner from "src/component/spinner";
-import CardSkeleton from "src/component/product/CardSkeleton";
 
-interface TProductPublicState {
-  data: TProduct[];
-  total: number;
+import { Metadata } from 'next'
+import Head from 'next/head'
+import { ReactNode } from 'react'
+import { getAllProductsPublic } from 'src/services/product'
+import { getAllProductTypes } from 'src/services/product-type'
+
+
+// ** Pages
+import HomeView from 'src/views/home/page'
+
+interface TOptions {
+  label: string
+  value: string
 }
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
-}));
+const getProductData = async () => {
+  const limit = 10
+  const page = 1
+  const order = "createdAt desc"
+  try {
+    const productTypes: TOptions[] = []
+    await getAllProductTypes({ params: { limit: -1, page: -1 } })
+      .then(res => {
+        const data = res?.data.productTypes
+        if (data) {
+          data?.map((item: { name: string; _id: string }) => {
+            productTypes.push({ label: item.name, value: item._id })
+          })
+        }
+      })
+    const res = await getAllProductsPublic(
+      { params: { limit: limit, page: page, order, productType: productTypes?.[0]?.value } }
+    )
 
-export default function BasicGrid() {
-  const [sortBy, setSortBy] = useState("createdAt desc");
-  const [searchBy, setSearchBy] = useState("");
-  const [pageSize, setPageSize] = useState(20);
-  const [page, setPage] = useState(1);
-  const [optionTypes, setOptionTypes] = useState<
-    { label: string; value: string }[]
-  >([]);
-  const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
-    {}
-  );
-  const [loading, setLoading] = useState(true);
-  const [productsPublic, setProductsPublic] = useState<TProductPublicState>({
-    data: [],
-    total: 0,
-  });
-  // fetch api
-  const handleGetListProducts = async () => {
-    setLoading(true);
-    const query = {
+    const data = res.data
+
+    return {
+      products: data?.products,
+      totalCount: data?.totalCount,
+      productTypes: productTypes || [],
       params: {
-        limit: pageSize,
-        page: page,
-        search: searchBy,
-        order: sortBy,
-      },
-    };
-    await getAllProductsPublic(query).then((res) => {
-      if (res?.data) {
-        console.log("res: ", res);
-        setLoading(false);
-        setProductsPublic({
-          data: res?.data?.products,
-          total: res?.data?.totalCount,
-        });
+        limit,
+        page,
+        order,
+        productType: productTypes?.[0]?.value || ''
       }
-    });
-  };
-  React.useEffect(() => {
-    handleGetListProducts();
-  }, []);
+    }
+  } catch (error) {
+    return {
+      products: [],
+      totalCount: 0,
+      productTypes: [],
+      params: {
+        limit,
+        page,
+        order,
+        productType: ''
+      }
+    }
+  }
+}
+
+export const metadata: Metadata = {
+  title: "Lập trình thật dễ - Danh sách sản phẩm",
+  description: "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+  keywords: `Lập trình thật dễ - ReactJS, NextJS 14, Typescript, Lập trình thật dễ`,
+  openGraph: {
+    title: "Lập trình thật dễ - Danh sách sản phẩm",
+    description: "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+    type: 'website',
+    url: `https://convert-app-router.vercel.app/home`
+  },
+  twitter: {
+    title: "Lập trình thật dễ - Danh sách sản phẩm",
+    description: "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+  },
+}
+
+export default async function Home() {
+  const { products, totalCount, params, productTypes } = await getProductData()
 
   return (
-    <>
-      {loading && <Spinner />}
-      <Container maxWidth="xl">
-        <Box sx={{ flexGrow: 1, marginTop: 10 }}>
-          <Grid container spacing={2} sx={{ width: "100%" }}>
-            <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
-              <Item>xs=4</Item>
-            </Grid>
-            <Grid container item xs={9}>
-              {loading ? (
-                <Grid
-                  container
-                  spacing={{
-                    md: 6,
-                    xs: 4,
-                  }}
-                >
-                  {Array.from({ length: 6 }).map((_, index) => {
-                    return (
-                      <Grid item key={index} md={4} sm={6} xs={12}>
-                        <CardSkeleton />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              ) : (
-                <Grid
-                  container
-                  spacing={{
-                    md: 6,
-                    xs: 4,
-                  }}
-                >
-                  {productsPublic?.data?.length > 0 ? (
-                    <>
-                      {productsPublic?.data?.map((item: TProduct) => {
-                        return (
-                          <Grid item key={item._id} md={4} sm={6} xs={12}>
-                            <CardProduct item={item} />
-                          </Grid>
-                        );
-                      })}
-                    </>
-                  ) : (
-                    <Box sx={{ width: "100%", mt: 10 }}>
-                      <NoData
-                        widthImage="60px"
-                        heightImage="60px"
-                        textNodata={"No product"}
-                      />
-                    </Box>
-                  )}
-                </Grid>
-              )}
-              <Box mt={6}></Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
-    </>
-  );
+    <HomeView products={products}
+      totalCount={totalCount}
+      paramsServer={params}
+      productTypesServer={productTypes} />
+  )
 }
+
+// Home.title = "Danh sách sản phẩm của cửa hàng Lập trình thật dễ"
+export const dynamic = 'force-static'
+export const revalidate = 10
+export const maxDuration = 60
