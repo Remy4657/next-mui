@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+import { Typography, useTheme, Tab, Tabs, TabsProps } from "@mui/material";
+
 // ** react
 import { useState } from "react";
 // ** type
@@ -32,10 +34,16 @@ const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#1A2027",
   }),
 }));
+const StyledTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
+  "&.MuiTabs-root": {
+    borderBottom: "none",
+  },
+}));
 
 export default function BasicGrid() {
   const [sortBy, setSortBy] = useState("createdAt desc");
   const [searchBy, setSearchBy] = useState("");
+  const [productTypeSelected, setProductTypeSelected] = useState("");
   const [pageSize, setPageSize] = useState(20);
   const [page, setPage] = useState(1);
   const [optionTypes, setOptionTypes] = useState<
@@ -49,6 +57,10 @@ export default function BasicGrid() {
     data: [],
     total: 0,
   });
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setProductTypeSelected(newValue);
+  };
   // fetch api
   const handleGetListProducts = async () => {
     setLoading(true);
@@ -80,6 +92,17 @@ export default function BasicGrid() {
       {loading && <Spinner />}
       <Container maxWidth="xl">
         <Box sx={{ flexGrow: 1, marginTop: 10 }}>
+          <StyledTabs
+            value={productTypeSelected}
+            onChange={handleChange}
+            aria-label="wrapped label tabs example"
+          >
+            {optionTypes.map((opt) => {
+              return (
+                <Tab key={opt.value} value={opt.value} label={opt.label} />
+              );
+            })}
+          </StyledTabs>
           <Grid container spacing={2} sx={{ width: "100%" }}>
             <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
               <Item>xs=4</Item>
