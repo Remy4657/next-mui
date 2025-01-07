@@ -1,27 +1,15 @@
-"use client";
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import { Typography, useTheme, Tab, Tabs, TabsProps } from "@mui/material";
-
-// ** react
-import { useState } from "react";
-// ** type
-import { TProduct } from "../../types/product";
-// ** service
+import { Metadata } from "next";
+import Head from "next/head";
+import { ReactNode } from "react";
 import { getAllProductsPublic } from "src/services/product";
-// ** component
-import CardProduct from "src/component/product/CardProduct";
-import NoData from "src/component/no-data";
-import Spinner from "src/component/spinner";
-import CardSkeleton from "src/component/product/CardSkeleton";
+import { getAllProductTypes } from "src/services/product-type";
 
-interface TProductPublicState {
-  data: TProduct[];
-  total: number;
+// ** Pages
+import HomeView from "src/views/home/page";
+
+interface TOptions {
+  label: string;
+  value: string;
 }
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -34,16 +22,10 @@ const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#1A2027",
   }),
 }));
-const StyledTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
-  "&.MuiTabs-root": {
-    borderBottom: "none",
-  },
-}));
 
 export default function BasicGrid() {
   const [sortBy, setSortBy] = useState("createdAt desc");
   const [searchBy, setSearchBy] = useState("");
-  const [productTypeSelected, setProductTypeSelected] = useState("");
   const [pageSize, setPageSize] = useState(20);
   const [page, setPage] = useState(1);
   const [optionTypes, setOptionTypes] = useState<
@@ -57,52 +39,47 @@ export default function BasicGrid() {
     data: [],
     total: 0,
   });
-
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setProductTypeSelected(newValue);
-  };
   // fetch api
   const handleGetListProducts = async () => {
     setLoading(true);
     const query = {
       params: {
-        limit: pageSize,
-        page: page,
-        search: searchBy,
-        order: sortBy,
+        limit,
+        page,
+        order,
+        productType: "",
       },
     };
-    await getAllProductsPublic(query).then((res) => {
-      if (res?.data) {
-        console.log("res: ", res);
-        setLoading(false);
-        setProductsPublic({
-          data: res?.data?.products,
-          total: res?.data?.totalCount,
-        });
-      }
-    });
   };
-  React.useEffect(() => {
-    handleGetListProducts();
-  }, []);
+}
+
+export const metadata: Metadata = {
+  title: "Lập trình thật dễ - Danh sách sản phẩm",
+  description:
+    "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+  keywords: `Lập trình thật dễ - ReactJS, NextJS 14, Typescript, Lập trình thật dễ`,
+  openGraph: {
+    title: "Lập trình thật dễ - Danh sách sản phẩm",
+    description:
+      "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+    type: "website",
+    url: `https://convert-app-router.vercel.app/home`,
+  },
+  twitter: {
+    title: "Lập trình thật dễ - Danh sách sản phẩm",
+    description:
+      "Bán hàng điện tử, điện thoại, máy tính bảng, khóa học nextjs 14 reactjs typescript pro 2024 by Lập trình thật dễ - Xây dựng website bán hàng",
+  },
+};
+
+export default async function Home() {
+  const { products, totalCount, params, productTypes } = await getProductData();
 
   return (
     <>
       {loading && <Spinner />}
       <Container maxWidth="xl">
         <Box sx={{ flexGrow: 1, marginTop: 10 }}>
-          <StyledTabs
-            value={productTypeSelected}
-            onChange={handleChange}
-            aria-label="wrapped label tabs example"
-          >
-            {optionTypes.map((opt) => {
-              return (
-                <Tab key={opt.value} value={opt.value} label={opt.label} />
-              );
-            })}
-          </StyledTabs>
           <Grid container spacing={2} sx={{ width: "100%" }}>
             <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
               <Item>xs=4</Item>
