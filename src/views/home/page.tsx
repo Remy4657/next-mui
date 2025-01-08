@@ -16,11 +16,15 @@ import { useTranslation } from 'react-i18next'
 
 // ** service
 import { getAllProductsPublic } from "src/services/product";
+import { getAllCities } from 'src/services/city'
+
 // ** component
 import CardProduct from "src/component/product/CardProduct";
 import NoData from "src/component/no-data";
 import Spinner from "src/component/spinner";
 import CardSkeleton from "src/component/product/CardSkeleton";
+import FilterProduct from 'src/component/product/FilterProduct'
+
 
 // ** utils
 import { formatFilter } from "src/utils";
@@ -67,7 +71,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const HomeView: NextPage<TProps> = (props) => {
-    const isServerRendered = useRef<boolean>(true);
+    const isFirstRender = useRef<boolean>(false);
     // ** Translate
     const { t } = useTranslation()
     // ** Props
@@ -75,12 +79,16 @@ const HomeView: NextPage<TProps> = (props) => {
 
     const [sortBy, setSortBy] = useState("createdAt desc");
     const [searchBy, setSearchBy] = useState("");
+    const [productTypeSelected, setProductTypeSelected] = useState('')
+    const [reviewSelected, setReviewSelected] = useState('')
+    const [locationSelected, setLocationSelected] = useState('')
+    const [optionCities, setOptionCities] = useState<{ label: string; value: string }[]>([])
+
     const [pageSize, setPageSize] = useState(20);
     const [page, setPage] = useState(1);
     const [optionTypes, setOptionTypes] = useState<
         { label: string; value: string }[]
     >([]);
-    const [productTypeSelected, setProductTypeSelected] = useState('')
 
     const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
         {}
@@ -93,6 +101,24 @@ const HomeView: NextPage<TProps> = (props) => {
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setProductTypeSelected(newValue)
+    }
+    const handleResetFilter = () => {
+        setLocationSelected('')
+        setReviewSelected('')
+    }
+    const handleFilterProduct = (value: string, type: string) => {
+        switch (type) {
+            case 'review': {
+                setReviewSelected(value)
+
+                break
+            }
+            case 'location': {
+                setLocationSelected(value)
+
+                break
+            }
+        }
     }
     // fetch api
     const handleGetListProducts = async () => {
@@ -116,32 +142,48 @@ const HomeView: NextPage<TProps> = (props) => {
             }
         });
     };
+    const fetchAllCities = async () => {
+        setLoading(true)
+        await getAllCities({ params: { limit: -1, page: -1 } })
+            .then(res => {
+                const data = res?.data.cities
+                if (data) {
+                    setOptionCities(data?.map((item: { name: string; _id: string }) => ({ label: item.name, value: item._id })))
+                }
+                setLoading(false)
+            })
+            .catch(e => {
+                setLoading(false)
+            })
+    }
+    //React.useEffect(() => {
+    // if (isFirstRender.current) {
+
+    //     handleGetListProducts();
+    // }
+    //}, []);
     React.useEffect(() => {
-        handleGetListProducts()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // if (isFirstRender.current) {
+        //     setProductsPublic({ data: products, total: totalCount });
+        // }
+        setOptionTypes(productTypesServer);
+        if (paramsServer.productType) {
+            setProductTypeSelected(paramsServer.productType)
+        }
+
+    }, []);
+    React.useEffect(() => {
+        fetchAllCities()
+        if (isFirstRender.current) {
+            handleGetListProducts()
+        }
+
     }, [sortBy, searchBy, page, pageSize, filterBy])
     React.useEffect(() => {
-        if (isServerRendered.current) {
-            setFilterBy({ productType: productTypeSelected })
-        }
-    }, [productTypeSelected])
-
-    React.useEffect(() => {
-        if (!isServerRendered.current) {
-            handleGetListProducts();
-
-        }
-    }, []);
-    React.useEffect(() => {
-        if (isServerRendered.current) {
-            setProductsPublic({ data: products, total: totalCount });
-            setOptionTypes(productTypesServer);
-            if (paramsServer.productType) {
-                setProductTypeSelected(paramsServer.productType)
-            }
-        }
-        setLoading(false);
-    }, []);
+        console.log("productTypeSelected: ", productTypeSelected)
+        setFilterBy({ productType: productTypeSelected, minStar: reviewSelected, productLocation: locationSelected })
+        isFirstRender.current = true
+    }, [productTypeSelected, reviewSelected, locationSelected])
 
     return (
         <>
@@ -158,7 +200,15 @@ const HomeView: NextPage<TProps> = (props) => {
 
                     <Grid container spacing={2} sx={{ width: "100%" }}>
                         <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
-                            <Item>xs=4</Item>
+                            <Box sx={{ width: '100%' }}>
+                                <FilterProduct
+                                    locationSelected={locationSelected}
+                                    reviewSelected={reviewSelected}
+                                    handleReset={handleResetFilter}
+                                    optionCities={optionCities}
+                                    handleFilterProduct={handleFilterProduct}
+                                />
+                            </Box>
                         </Grid>
                         <Grid container item xs={9}>
                             <Box sx={{ width: "100%", display: "flex", justifyContent: 'flex-end' }}>
