@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* <body className={`${geistSans.variable} ${geistMono.variable}`}> */}
-      <body className="">
+      <body className="" suppressHydrationWarning>
         <StoreWrapper>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>
