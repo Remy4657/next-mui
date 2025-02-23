@@ -200,11 +200,11 @@ export default function Sidebar() {
                 },
                 open
                   ? {
-                    justifyContent: "initial",
-                  }
+                      justifyContent: "initial",
+                    }
                   : {
-                    justifyContent: "center",
-                  },
+                      justifyContent: "center",
+                    },
               ]}
             >
               <ListItemIcon
@@ -215,11 +215,11 @@ export default function Sidebar() {
                   },
                   open
                     ? {
-                      mr: 3,
-                    }
+                        mr: 3,
+                      }
                     : {
-                      mr: "auto",
-                    },
+                        mr: "auto",
+                      },
                 ]}
               >
                 {/* <PersonOutlineIcon /> */}
@@ -230,18 +230,18 @@ export default function Sidebar() {
                 sx={[
                   open
                     ? {
-                      opacity: 1,
-                    }
+                        opacity: 1,
+                      }
                     : {
-                      opacity: 0,
-                    },
+                        opacity: 0,
+                      },
                 ]}
               >
                 {user?.email}
               </ListItemText>
             </ListItemButton>
           ) : (
-           
+            <></>
           )}
         </ListItem>
       </Drawer>
