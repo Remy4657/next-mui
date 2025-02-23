@@ -13,11 +13,9 @@ import Pagination from "@mui/material/Pagination";
 // ** react
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useTranslation } from "react-i18next";
 
 // ** service
 import { getAllProductsPublic } from "src/services/product";
-import { getAllCities } from "src/services/city";
 import { getAllCities } from "src/services/city";
 
 // ** component
@@ -26,11 +24,9 @@ import NoData from "src/component/no-data";
 import Spinner from "src/component/spinner";
 import CardSkeleton from "src/component/product/CardSkeleton";
 import FilterProduct from "src/component/product/FilterProduct";
-import FilterProduct from "src/component/product/FilterProduct";
 
 // ** utils
 import { formatFilter } from "src/utils";
-import CustomSelect from "src/component/custom-select";
 import CustomSelect from "src/component/custom-select";
 
 // ** type
@@ -38,8 +34,6 @@ import CustomSelect from "src/component/custom-select";
 import { TProduct } from "src/types/product";
 
 interface TOptions {
-  label: string;
-  value: string;
   label: string;
   value: string;
 }
@@ -53,27 +47,12 @@ type TProps = {
     order: string;
     productType: string;
   };
-  products: TProduct[];
-  totalCount: number;
-  productTypesServer: TOptions[];
-  paramsServer: {
-    limit: number;
-    page: number;
-    order: string;
-    productType: string;
-  };
 };
-
 interface TProductPublicState {
-  data: TProduct[];
-  total: number;
   data: TProduct[];
   total: number;
 }
 const StyledTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
-  "&.MuiTabs-root": {
-    borderBottom: "none",
-  },
   "&.MuiTabs-root": {
     borderBottom: "none",
   },
@@ -88,22 +67,9 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.applyStyles("dark", {
     backgroundColor: "#1A2027",
   }),
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
 }));
 
 const HomeView: NextPage<TProps> = (props) => {
-  const isFirstRender = useRef<boolean>(false);
-  // ** Translate
-  const { t } = useTranslation();
-  // ** Props
-  const { products, totalCount, paramsServer, productTypesServer } = props;
   const isFirstRender = useRef<boolean>(false);
   // ** Translate
   const { t } = useTranslation();
@@ -125,14 +91,6 @@ const HomeView: NextPage<TProps> = (props) => {
     { label: string; value: string }[]
   >([]);
 
-  const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
-    {}
-  );
-  const [loading, setLoading] = useState(true);
-  const [productsPublic, setProductsPublic] = useState<TProductPublicState>({
-    data: [],
-    total: 0,
-  });
   const [filterBy, setFilterBy] = useState<Record<string, string | string[]>>(
     {}
   );
@@ -169,8 +127,6 @@ const HomeView: NextPage<TProps> = (props) => {
       case "location": {
         setLocationSelected(value);
 
-        break;
-      }
         break;
       }
     }
@@ -267,73 +223,6 @@ const HomeView: NextPage<TProps> = (props) => {
               );
             })}
           </StyledTabs>
-  return (
-    <>
-      {loading && <Spinner />}
-      <Container maxWidth="xl">
-        <Box sx={{ flexGrow: 1, marginTop: 10 }}>
-          <StyledTabs
-            value={productTypeSelected}
-            onChange={handleChange}
-            aria-label="wrapped label tabs example"
-          >
-            {optionTypes.map((opt) => {
-              return (
-                <Tab key={opt.value} value={opt.value} label={opt.label} />
-              );
-            })}
-          </StyledTabs>
-
-          <Grid container spacing={2} sx={{ width: "100%" }}>
-            <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
-              <Box sx={{ width: "100%" }}>
-                <FilterProduct
-                  locationSelected={locationSelected}
-                  reviewSelected={reviewSelected}
-                  handleReset={handleResetFilter}
-                  optionCities={optionCities}
-                  handleFilterProduct={handleFilterProduct}
-                />
-              </Box>
-            </Grid>
-            <Grid container item xs={9}>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Box sx={{}}>
-                  <CustomSelect
-                    fullWidth
-                    onChange={(e) => {
-                      setSortBy(e.target.value as string);
-                    }}
-                    value={sortBy}
-                    options={[
-                      {
-                        label: t("Sort best sold"),
-                        value: "sold desc",
-                      },
-                      {
-                        label: t("Sort new create"),
-                        value: "createdAt desc",
-                      },
-                      {
-                        label: t("Sort high view"),
-                        value: "views desc",
-                      },
-                      {
-                        label: t("Sort high like"),
-                        value: "totalLikes desc",
-                      },
-                    ]}
-                    placeholder={t("Sort_by")}
-                    sx={{ padding: "0 20px" }}
-                  />
-                </Box>
-              </Box>
           <Grid container spacing={2} sx={{ width: "100%" }}>
             <Grid item xs={3} sx={{ paddingLeft: "0px !important" }}>
               <Box sx={{ width: "100%" }}>
