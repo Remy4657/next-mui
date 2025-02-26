@@ -8,6 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
+import dayjs from "dayjs";
 
 const Test = () => {
   const [selectedTime, setEndSelectedTime] = useState(null);
@@ -59,6 +60,26 @@ const Test = () => {
     } else {
       setError(false);
     }
+  };
+
+  //
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [numberMonth, setNumberMonth] = useState("");
+
+  const handleStartDateOnChange = (newValue) => {
+    //console.log(event.target);
+    console.log(newValue?.format("YYYY-MM-DD"));
+    setStartDate(newValue ? newValue?.format("YYYY-MM-DD") : null);
+    setEndDate(newValue ? newValue?.add(numberMonth, "month") : null); // Add 1 month
+    if (!newValue) {
+      setNumberMonth("");
+    }
+    // setSelectedDate(updatedDate);
+  };
+  const onChangeNumberMonth = (event) => {
+    setNumberMonth(event.target.value);
+    setEndDate(dayjs(startDate).add(event.target.value, "month")); // Add 1 month
   };
   return (
     <>
@@ -123,6 +144,57 @@ const Test = () => {
                 },
               }}
             />
+          </DemoContainer>
+        </LocalizationProvider>
+      </Box>
+      <Box sx={{ mt: 3, display: "flex" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["DatePicker"]}>
+            <DatePicker
+              label="Start date"
+              // value={dayjs(startDate)}
+              onChange={handleStartDateOnChange}
+              slotProps={{
+                field: {
+                  readOnly: true,
+                },
+                actionBar: {
+                  actions: ["clear"],
+                },
+              }}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+        <Box
+          component="form"
+          sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-basic"
+            label="Outlined"
+            variant="outlined"
+            type="number"
+            disabled={!startDate}
+            slotProps={{
+              input: {
+                min: 1,
+                max: 12,
+                onInput: (e) => {
+                  const value = e.target.value;
+                  if (value < 1) e.target.value = 1;
+                  if (value > 12) e.target.value = 12;
+                },
+              },
+            }}
+            value={numberMonth}
+            onChange={onChangeNumberMonth}
+          />
+        </Box>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["DatePicker"]}>
+            <DatePicker label="End date" value={endDate} disabled={true} />
           </DemoContainer>
         </LocalizationProvider>
       </Box>
