@@ -50,7 +50,6 @@ const Test = () => {
   };
 
   const onChangeNumber = (e) => {
-    console.log(e.target.value);
     setValueNumber(e.target.value);
     console.log("startSelectedTime: ", startSelectedTime);
     setEndSelectedTime(startSelectedTime.add(e.target.value, "hour"));
@@ -63,15 +62,28 @@ const Test = () => {
   };
 
   //
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
+  const [date, setDate] = useState({
+    startDate: null,
+    endDate: null,
+  });
   const [numberMonth, setNumberMonth] = useState("");
 
   const handleStartDateOnChange = (newValue) => {
-    //console.log(event.target);
-    console.log(newValue?.format("YYYY-MM-DD"));
-    setStartDate(newValue ? newValue?.format("YYYY-MM-DD") : null);
-    setEndDate(newValue ? newValue?.add(numberMonth, "month") : null); // Add 1 month
+    console.log("newValue: ", newValue);
+    console.log("string date format: ", newValue?.format("YYYY-MM-DD"));
+    setDate({
+      ...date,
+      startDate: newValue ? newValue : null,
+      endDate: newValue ? newValue?.add(6, "month") : null,
+    });
+    // setStartDate(newValue ? newValue : null);
+    // setDate({
+    //   ...date,
+    //   endDate: newValue ? newValue?.add(6, "month") : null,
+    // });
+    // setEndDate(newValue ? newValue?.add(numberMonth, "month") : null); // Add 1 month
     if (!newValue) {
       setNumberMonth("");
     }
@@ -79,7 +91,15 @@ const Test = () => {
   };
   const onChangeNumberMonth = (event) => {
     setNumberMonth(event.target.value);
-    setEndDate(dayjs(startDate).add(event.target.value, "month")); // Add 1 month
+    console.log(event.target.value);
+    console.log("date.startDate: ", date.startDate);
+    const temp = dayjs(date["startDate"]);
+    console.log(temp);
+    setDate({
+      ...date,
+      endDate: temp.add(event.target.value, "month"),
+    });
+    // setEndDate(dayjs(startDate).add(event.target.value, "month")); // Add 1 month
   };
   return (
     <>
@@ -152,7 +172,7 @@ const Test = () => {
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
               label="Start date"
-              // value={dayjs(startDate)}
+              value={date.startDate}
               onChange={handleStartDateOnChange}
               slotProps={{
                 field: {
@@ -176,7 +196,7 @@ const Test = () => {
             label="Outlined"
             variant="outlined"
             type="number"
-            disabled={!startDate}
+            disabled={!date.startDate ? true : false}
             slotProps={{
               input: {
                 min: 1,
@@ -192,9 +212,10 @@ const Test = () => {
             onChange={onChangeNumberMonth}
           />
         </Box>
+        {/* {date.startDate ?? <>sdjhfdjshf</>} */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
-            <DatePicker label="End date" value={endDate} disabled={true} />
+            <DatePicker label="End date" value={date.endDate} disabled={true} />
           </DemoContainer>
         </LocalizationProvider>
       </Box>
